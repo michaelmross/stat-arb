@@ -1,0 +1,72 @@
+[
+ {
+  "pair": "SCHZ/SPAB",
+  "sharpe_2bp": 0.4550092088020051,
+  "sharpe_0bp": 0.5170948538695254,
+  "cost_drag": -0.062085645067520234,
+  "verdict": "churn"
+ },
+ {
+  "pair": "BND/SPAB",
+  "sharpe_2bp": 0.4658889220106357,
+  "sharpe_0bp": 0.5786799157516971,
+  "cost_drag": -0.11279099374106138,
+  "verdict": "churn"
+ },
+ {
+  "pair": "AGG/BND",
+  "sharpe_2bp": -0.36816470103286464,
+  "sharpe_0bp": -0.3184455046380332,
+  "cost_drag": -0.04971919639483141,
+  "verdict": "churn"
+ },
+ {
+  "pair": "IGSB/SPSB",
+  "sharpe_2bp": -4.009334410815728,
+  "sharpe_0bp": -0.10733029515797744,
+  "cost_drag": -3.9020041156577507,
+  "verdict": "churn"
+ },
+ {
+  "pair": "SCHZ/AGG",
+  "sharpe_2bp": 0.10728068319932894,
+  "sharpe_0bp": 0.2515148977010556,
+  "cost_drag": -0.1442342145017267,
+  "verdict": "churn"
+ },
+ {
+  "pair": "VTI/SCHB",
+  "sharpe_2bp": 0.2744495296089142,
+  "sharpe_0bp": 0.6773052942367385,
+  "cost_drag": -0.40285576462782424,
+  "verdict": "churn"
+ },
+ {
+  "pair": "VTIP/STIP",
+  "sharpe_2bp": -0.9172441475668555,
+  "sharpe_0bp": 0.09477365009204543,
+  "cost_drag": -1.0120177976589009,
+  "verdict": "churn"
+ },
+ {
+  "pair": "AGG/SPAB",
+  "sharpe_2bp": 0.07537983976299605,
+  "sharpe_0bp": 0.12493181338204154,
+  "cost_drag": -0.049551973619045495,
+  "verdict": "churn"
+ },
+ {
+  "pair": "VCIT/IGIB",
+  "sharpe_2bp": -5.666496768753144,
+  "sharpe_0bp": -0.7488021331464539,
+  "cost_drag": -4.91769463560669,
+  "verdict": "adverse level"
+ },
+ {
+  "pair": "LQD/USIG",
+  "sharpe_2bp": -0.5869265051743138,
+  "sharpe_0bp": -0.4294462961073751,
+  "cost_drag": -0.15748020906693866,
+  "verdict": "churn"
+ }
+]

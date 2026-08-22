@@ -1,0 +1,82 @@
+[
+  {
+    "pair":"SCHZ\/SPAB",
+    "cohort":"v2_fixed_income",
+    "peak_z":24.8698886597,
+    "end_z":4.6517384922,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"BND\/SPAB",
+    "cohort":"v1",
+    "peak_z":72.3399925402,
+    "end_z":2.3279806682,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"AGG\/BND",
+    "cohort":"v1",
+    "peak_z":42.6029531387,
+    "end_z":-3.4103843574,
+    "crisis_ret":-0.0105223258,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"IGSB\/SPSB",
+    "cohort":"v2_fixed_income",
+    "peak_z":10.3269380406,
+    "end_z":-2.128297679,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"SCHZ\/AGG",
+    "cohort":"v2_fixed_income",
+    "peak_z":24.4109802799,
+    "end_z":4.3612267567,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"VTI\/SCHB",
+    "cohort":"v1",
+    "peak_z":9.5110816936,
+    "end_z":-0.2909382609,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"VTIP\/STIP",
+    "cohort":"v2_fixed_income",
+    "peak_z":44.7042617599,
+    "end_z":-7.8694565845,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"AGG\/SPAB",
+    "cohort":"v1",
+    "peak_z":67.1446792708,
+    "end_z":-0.3256997243,
+    "crisis_ret":0.0,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"VCIT\/IGIB",
+    "cohort":"v2_fixed_income",
+    "peak_z":12.5179226525,
+    "end_z":0.7270326456,
+    "crisis_ret":0.0156062895,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  },
+  {
+    "pair":"LQD\/USIG",
+    "cohort":"v1",
+    "peak_z":15.2377772788,
+    "end_z":6.0329010438,
+    "crisis_ret":-0.016543409,
+    "outcome":"BROKE (blew through 4-sigma stop)"
+  }
+]

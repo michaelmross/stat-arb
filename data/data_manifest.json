@@ -1,0 +1,920 @@
+{
+ "source": "Tiingo daily EOD, format=csv, adjusted",
+ "fetched": "2026-08-21",
+ "n_tickers": 114,
+ "note": "Covers both cohorts (v1 + v2_fixed_income). adjClose is renormalized backward on each new distribution; hash drift with unchanged row count and date range indicates renormalization, which shifts log prices by a constant and leaves all statistics in the note invariant.",
+ "tickers": {
+  "AGG": {
+   "sha256": "aebe6610512851d9ccc7032f6f787b0e84ddc55a5a1e29c912fd785d7723c24a",
+   "bytes": 563851,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "BBH": {
+   "sha256": "cc867ed0db1c50c4eceeddd459920f92eecd2f5b9bc9fdbb466098cccef0e093",
+   "bytes": 551994,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "BND": {
+   "sha256": "f61db826a020d2c23ed7184d3ad0465b277430b8da290d86c645be8cd448bde4",
+   "bytes": 553807,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "DBEF": {
+   "sha256": "aa8f9e2f8e821300976b8ab4ebbf6a1f831b93b61ffbeacfdcd3edd16afc21c2",
+   "bytes": 499099,
+   "rows": 3823,
+   "start": "2011-06-09",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "DBJP": {
+   "sha256": "e06bb0e6d459f85bd946f68020d946d18fb2e94e019f2dba6fb19bb8fd50b49c",
+   "bytes": 497317,
+   "rows": 3823,
+   "start": "2011-06-09",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "DXJ": {
+   "sha256": "2499f653e5fd4e5e123ebad7ddb2af9a9a12cbcfadf0aae1a36ca7b7cb5ca1e4",
+   "bytes": 554612,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "EEM": {
+   "sha256": "2dac2558cf0c41a9be6703f182195029dd4dd5c35785742b5aaf0d7e86e31211",
+   "bytes": 565125,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "EFA": {
+   "sha256": "b162e4e7f99344fe2fbf7357219a467efe8fa0f464804ffa9695e2b6dffabb6b",
+   "bytes": 561984,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "EMB": {
+   "sha256": "92515310dab00fe774329e459c21177c86a738c007f979b4f450518f6f4b6eb8",
+   "bytes": 561842,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "EWG": {
+   "sha256": "2ef0bcbd4733fdb7c46fb5b89f5049add774b3a4f2d49af76d37c30a905c09fe",
+   "bytes": 560430,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "EWJ": {
+   "sha256": "20db3ab4126f7bbf00a664592ef4f1c4c25aae99ae188860dda56779e8e81f6d",
+   "bytes": 555434,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "EZU": {
+   "sha256": "97543e26f5592408917b3da1a0af4f7d88bdebdfb298a8e9d1f47baa6e6339dd",
+   "bytes": 556547,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "GLD": {
+   "sha256": "c49ee628549ea64a8c14cfdf21e390412eafa1c66452fe5a22aa40c2f95158e3",
+   "bytes": 388183,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "GLDM": {
+   "sha256": "eef81c68fe37e0889e3e375e656bc17759edf4d4f338597260f467264cce5ff0",
+   "bytes": 172469,
+   "rows": 2050,
+   "start": "2018-06-26",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "HEFA": {
+   "sha256": "6e84186e1410111decc606fbb0c9d97adcdb55b04a4608eddf0f6b8d467aef9a",
+   "bytes": 416505,
+   "rows": 3148,
+   "start": "2014-02-14",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "HEWG": {
+   "sha256": "afafcae5fb3ba3ed6a7a17658f9bb3a6f6370bb582c1cca702e30be0a293830e",
+   "bytes": 354757,
+   "rows": 2778,
+   "start": "2014-02-18",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "HEWJ": {
+   "sha256": "daaa9ad99a177ee9c35717497ea7a0af28b8eeedf950dc6efca1eaf8a931af87",
+   "bytes": 414271,
+   "rows": 3155,
+   "start": "2014-02-05",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "HEZU": {
+   "sha256": "c57d7ec54d7a75269905374a342df467454a5f9b286e6e58ae18f01d17941ddb",
+   "bytes": 398361,
+   "rows": 3028,
+   "start": "2014-08-07",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "HYG": {
+   "sha256": "71bfd95f6bd2acf6c286a86fa817744f9ce1ac5365766adb842f6ba0c040c975",
+   "bytes": 558914,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IAU": {
+   "sha256": "8b7272da10fe3ef3f9e1e7218f57ba73ee64ae31b527dec8f19a928d4f16cfcb",
+   "bytes": 356387,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IBB": {
+   "sha256": "4e4c9ba4c054d030e06aa33688e4f77a1524078c33625cf571020d79c4934118",
+   "bytes": 571646,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IEF": {
+   "sha256": "594d28e601df679d7350affb5c3f03394873b6a310de3a2b025cb5cee4a4fbd7",
+   "bytes": 561769,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IEFA": {
+   "sha256": "607ffed582a01a85525108d9aae93053b280a2badaf79abd00f449b9c2a239d8",
+   "bytes": 459909,
+   "rows": 3475,
+   "start": "2012-10-24",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IEMG": {
+   "sha256": "525a0cca3129b3c92ecbb82610522c778443865a36aeea8e8a3263dd96f3e585",
+   "bytes": 462994,
+   "rows": 3475,
+   "start": "2012-10-24",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IGIB": {
+   "sha256": "fabb72461b7d069149fa37424782ee32b671f8550908fa870b5a4bb10b3ca370",
+   "bytes": 562457,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IGSB": {
+   "sha256": "e76a1a3eec8eb479ad8f7be7c49bc755613568c7c1660a18bc5c9f8f2c42fa76",
+   "bytes": 561692,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IJH": {
+   "sha256": "f28ddd84bad9678e06fd29dd6d74d374eb630b9e9d7acf6cd1d59db1f23a9a3e",
+   "bytes": 567513,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IJR": {
+   "sha256": "ad3c810e825dd7354e5f7390c6f8a268f8497da293aa0779d80c98b425325094",
+   "bytes": 562350,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "ITB": {
+   "sha256": "81e6b030f2cb44ebf34ac820c0fbc84cf00723ca04e3152d14ccf92fbba79180",
+   "bytes": 557675,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "ITOT": {
+   "sha256": "046b9da8da38287cce6c45fc496d3a5729891c6f67b9ddf4500364ecd88ddf6e",
+   "bytes": 553579,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IVV": {
+   "sha256": "3d0c0325ed288a99cdf96358501259aa2a02b026c4769a961299bdb59dc90276",
+   "bytes": 574349,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IWM": {
+   "sha256": "c1c77c9ff0bea596cafb5f59431eb5930dffd560f9219da6d080ec3c2ee32a58",
+   "bytes": 579608,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IYR": {
+   "sha256": "c83aca2540648092aaebc8922a3a8d958839b4a1709844a7ff1923d20de8395f",
+   "bytes": 555169,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "IYW": {
+   "sha256": "5570c42ee18e9cf15b0c1bdac2622f00d1de4b74c65b9474bbb2b194385b9559",
+   "bytes": 562132,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "JNK": {
+   "sha256": "cc77a58c0bf22ed16d86bd7d12a40066fa839859473b670a0d67f6093e5910d9",
+   "bytes": 556199,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "KBE": {
+   "sha256": "bdd54e0be252a5cb0ed0c97e4a0f6bf09c40feea5e3dda63a961b7230e205555",
+   "bytes": 556276,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "KRE": {
+   "sha256": "a4043e10b087a257e38798172506eb464582c998564b09f11fe4e09f212c4795",
+   "bytes": 558438,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "LQD": {
+   "sha256": "3985c824f6538f04966d4052b9ba65dbc3fceaf478d6b23efdb4526d0f606ff6",
+   "bytes": 574606,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "MBB": {
+   "sha256": "3db571ab9d45b524a880262a084051037686fea097272bb35285e5051d8cddff",
+   "bytes": 559089,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "MDY": {
+   "sha256": "8d352ab61862a6a0f692ca2443be63a98e9716c544c2036673004e1438ae7139",
+   "bytes": 570570,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "MUB": {
+   "sha256": "5a80491304a526a4e1e84e0569f40f5faf4c7007bd4575b4c874f49a499601c6",
+   "bytes": 565159,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "OIH": {
+   "sha256": "f6890842a61ff31b11b808ed101b200666f67375264247906ad73016d0066475",
+   "bytes": 551567,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "PCY": {
+   "sha256": "6c20b4fcf2d057bdeca3b38fd11fed5e67148d7809741bdc6740e708ab3edc13",
+   "bytes": 558477,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "PFF": {
+   "sha256": "9cf7ccf3e97eb394c6b2872c53a1d7a703c4ec861d27595aaa19ebf638e0612c",
+   "bytes": 562984,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "PGX": {
+   "sha256": "3faf90c777e13ca29e8edc971afb83c4a862cf6d9a6a47c9dd503e62aea6e60b",
+   "bytes": 553249,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "PSK": {
+   "sha256": "d493bdceb38292b4ff01506b06ce2c7794e928e1c66c82894e7d1e0575579eb0",
+   "bytes": 550296,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "PXJ": {
+   "sha256": "a42cd71c7ddd34261131254a47d5f8ceffc7a62ca29d562fb515eb71732a4a84",
+   "bytes": 534493,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "QQQ": {
+   "sha256": "c2f28336a3f0abd73a962a53e60fdd8d3fd6894927581abd7f019f54653a8dad",
+   "bytes": 576574,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "QQQM": {
+   "sha256": "433796b63168e9d76e0500d9075aaba6fda230c08a9715fc7df015158243c7d0",
+   "bytes": 201390,
+   "rows": 1471,
+   "start": "2020-10-13",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "RTH": {
+   "sha256": "30af50c18509d67ec58e4ba5595b0097367016b7193e83788feb28e3c064d1e5",
+   "bytes": 545162,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "RWR": {
+   "sha256": "c57cbc43a0bc04a6c92f5d51f0853d70a216d5ac7e3611c3fc7a6c04f15c7968",
+   "bytes": 544946,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SCHB": {
+   "sha256": "ff12a05fdc3d9a68019bbe0f45f3036ffba5b1215413d3a46f5e1e0d7dcbaf20",
+   "bytes": 556254,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SCHF": {
+   "sha256": "eecd054091c3efe454a37e5d59c8945cb560772019b47a662e53ab2263c97440",
+   "bytes": 559230,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SCHH": {
+   "sha256": "3534ae011fda76b73725e899cced6b01ef9f10c4e4c0534033d5824f169702f7",
+   "bytes": 522591,
+   "rows": 3924,
+   "start": "2011-01-13",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SCHO": {
+   "sha256": "8b11149bdabdbe18ffa7ed4b8c7f9ec3fbc1a3173414a08427b5401e2549e823",
+   "bytes": 535739,
+   "rows": 4036,
+   "start": "2010-08-05",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SCHP": {
+   "sha256": "78ce22a6514b4b6fa80c820d0c49962d5135c42f167353f959e7a5024c5652aa",
+   "bytes": 537643,
+   "rows": 4036,
+   "start": "2010-08-05",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SCHZ": {
+   "sha256": "588b2d4c4f14822c7352f2bdded89f22aa97a61f20d5b2142edf5f847d052e3e",
+   "bytes": 506024,
+   "rows": 3799,
+   "start": "2011-07-14",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SGOL": {
+   "sha256": "bab396322fe649eb56e6e509b86e9ce81750ef4ddf50ebc623863f07305e1402",
+   "bytes": 398741,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SHY": {
+   "sha256": "e6964d89c1a1761bd45d179743ec2ce981638236f46723850403133dbdfd322d",
+   "bytes": 547943,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SIVR": {
+   "sha256": "cd50cea177d061e763de31f5569f5331b347fdbb294004d94a6954ef8b468eb8",
+   "bytes": 345051,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SLV": {
+   "sha256": "9493aa894c3bc883d296c4c220e16913840fbb6ccfc43ef5ed1cf2a648a805cf",
+   "bytes": 358181,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SMH": {
+   "sha256": "5f6995ee011ab62e6a9709b65b20c95b6aa74a281e521809382e61e7e22a2194",
+   "bytes": 563236,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SOXX": {
+   "sha256": "588024e31ad0679e97cdf6ddbcd1f2677e23cacc255e042aece4710e70d8faf3",
+   "bytes": 564270,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPAB": {
+   "sha256": "57ffbbc5fc7eb900046e071caafeda04e60df0f9c0824d69aaaa3f2eb5e07a13",
+   "bytes": 557662,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPEM": {
+   "sha256": "39b61a0b8b75b9204692a28f2f6e7ca541cb6a965fac3480c913d4b59f844002",
+   "bytes": 551539,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPIB": {
+   "sha256": "8a7f8d461597c6570c8ecb3c8b81ae38cfdf1b712bddaab7ffc324ab5e45cc33",
+   "bytes": 556340,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPIP": {
+   "sha256": "a39fb7acdbe003b80a0ef097bbac00d36b839786e4aa83cb17575d5981dd0351",
+   "bytes": 554204,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPLG": {
+   "sha256": "fefdc2ee46cb2735a3f7d2377609064cfca177be4110e95ec3ec38155dd760e3",
+   "bytes": 548516,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPMB": {
+   "sha256": "2c2059777e7bdf9ef841053db1eb993bd6e6a88b802d334c89284f0060c42806",
+   "bytes": 551473,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPSB": {
+   "sha256": "5ade20a11fcec8e8ba299d37c75d9a9a413663479b88b2d6bae9b83e25b6bc22",
+   "bytes": 557014,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPTI": {
+   "sha256": "ad52039c234f2997d3637ecd24e6565495d2ba77c2c34bf5d5c8598cdfaa4808",
+   "bytes": 555893,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPTL": {
+   "sha256": "66aeb5d89f8775318a16eb2f5e1d4bc72e91e4efeb8f5cfd3c425cba9fbe005d",
+   "bytes": 554980,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPTS": {
+   "sha256": "b7e65cbbe639ec4d85464477c9d27f410abfddb2b79e3e054bd97972ae68d6ef",
+   "bytes": 487883,
+   "rows": 3701,
+   "start": "2011-12-01",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "SPY": {
+   "sha256": "6dcb12fdb7f160fa4a097c65ba46f9ada69620beda8993f33ea65bece942c0de",
+   "bytes": 591109,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "STIP": {
+   "sha256": "ed1b37c3c8e79f5d07fcccd3c6203d464f513b71be30196b0efc29ccd9a32c5c",
+   "bytes": 521898,
+   "rows": 3952,
+   "start": "2010-12-03",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "TIP": {
+   "sha256": "7c8791bececb2bfd8bd2fb84e3c2a10e0c850a146fe56809723d7ec07c871a5e",
+   "bytes": 568288,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "TLT": {
+   "sha256": "b6783837988751f6d7589f6e2650e4dd854ebaeaa1a12a9267d3de7fefe8ca0c",
+   "bytes": 570422,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "USHY": {
+   "sha256": "f97b94264857c2be3766a9647ce4f43e40ec13bcd01663f1374fb2f728281587",
+   "bytes": 295772,
+   "rows": 2216,
+   "start": "2017-10-26",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "USIG": {
+   "sha256": "3c8168616cea0cb620a1309a15750fc11f10fb1d086b17e59de2cbd03ad05661",
+   "bytes": 555489,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VCIT": {
+   "sha256": "07b353c6c7208927321b75fe65d5eb92971c0d722f825fd0425fa2393328d363",
+   "bytes": 550176,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VCSH": {
+   "sha256": "625438cd2b8ce9457637a6e4588d3e4888949d36223db7ce5de8249f84831db9",
+   "bytes": 549481,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VDC": {
+   "sha256": "7b2cfec1a77e5816691480743f121e9b86e389e81340b37c8757333a0df7f34b",
+   "bytes": 561230,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VDE": {
+   "sha256": "463e61957c189847f55fbadca8640c2ef706939b4d95a46d242e790779698899",
+   "bytes": 555092,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VEA": {
+   "sha256": "8d562997bca6167b117b1c054688d7e4c25b9a66d9e159b0899c6b0df0a3e2e2",
+   "bytes": 561066,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VFH": {
+   "sha256": "b1dded25ab182f5c2111f49d9763efa3ade0fdc2910165aebaecce47e5f74913",
+   "bytes": 551173,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VGIT": {
+   "sha256": "02232580a217b322f11824c87c92ac781a3c3e337c1d8f035a750cd4fa3f1ccb",
+   "bytes": 548307,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VGLT": {
+   "sha256": "104a47cb72b8556418447a04074dcd501b2cee1d652b01ea45d4c8a1fd5b5550",
+   "bytes": 546393,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VGSH": {
+   "sha256": "ae232cb66181e96a5235d5de6c31b849dd7012c57f26d8d2d94e8474d100fc9b",
+   "bytes": 547951,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VGT": {
+   "sha256": "4a6bdce3219d580aa147dcf0d835f1049869d56450c961b5445189bc548a8418",
+   "bytes": 565007,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VHT": {
+   "sha256": "2583fa6d595d09141c825aa1c0fe24dd200ac51b2668e2f1ef740e6a175224ca",
+   "bytes": 563144,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VIS": {
+   "sha256": "4d3a3f2fcc897b2d241edb1224363dd339a671eeac5fe325b5e1ff475e2aa26f",
+   "bytes": 557504,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VMBS": {
+   "sha256": "ceeed8e26079f8d805beba1666b7623265137e0af73c9b2952c1413dc8e099c8",
+   "bytes": 549104,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VNQ": {
+   "sha256": "8bacc85eaa3680a0f82efefaad9a3ce25f0bc243fa49996b7bdcc59800681740",
+   "bytes": 553675,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VOO": {
+   "sha256": "dcb193be5d13fec80ab0388805c019c2e0f41b7f12a5d62e5693ea874f0205ea",
+   "bytes": 546092,
+   "rows": 4012,
+   "start": "2010-09-09",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VPU": {
+   "sha256": "317e3262c5a9bdca0e8bce8c0e27493f3e70a2ad074e33f2649b921a6b642869",
+   "bytes": 557301,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VTEB": {
+   "sha256": "f3e5335009bc44bc02f6e52c54ec68874af61858bf857313edc59ba4ec6ed9eb",
+   "bytes": 364766,
+   "rows": 2764,
+   "start": "2015-08-25",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VTI": {
+   "sha256": "e4d86c9d69afba49099874de306c5ec5dd95add6ea36c07aa48396ef4936d981",
+   "bytes": 569609,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VTIP": {
+   "sha256": "b074b52c967ca02c92073f4a81c578e4fce95aae82727c7404ba4ae521b10890",
+   "bytes": 456826,
+   "rows": 3481,
+   "start": "2012-10-16",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VTWO": {
+   "sha256": "8c6c6bdcf35013155272ca4a24ab73e8e4096d1c249620ce29cbd0e77da68520",
+   "bytes": 525726,
+   "rows": 4003,
+   "start": "2010-09-22",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VWO": {
+   "sha256": "aa9f0b5d5e6ed9b5ca0b8623c0f0f76e38744cebfcf89387ff77493b339f822d",
+   "bytes": 563763,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "VWOB": {
+   "sha256": "c5e22b66b8799f37d606693b9bf32a550bac69b93d857f63810d2cf76ef9ac15",
+   "bytes": 433500,
+   "rows": 3325,
+   "start": "2013-06-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XBI": {
+   "sha256": "e29c3d7b372691afa5eae23fd035ee0eedca24f21c11df2a5c3d420a82a13a96",
+   "bytes": 557593,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XES": {
+   "sha256": "ac41a71971978fecfce221bd4e19353e25e240267ae38a4bfa79d1c54e5b904f",
+   "bytes": 543559,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLE": {
+   "sha256": "b97be25e583a1a66c1be6111af51118357c70df6518fec14e1bacf14221e9884",
+   "bytes": 567115,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLF": {
+   "sha256": "ecb9b0f78708153d7d6c28a51a3f7045967006a7683b45f36615d994ba995338",
+   "bytes": 567259,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLI": {
+   "sha256": "11a32706ef9b5c3eab8e460b643d2e0ea4f8227abebaa590bcce1fc0a7240730",
+   "bytes": 563915,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLK": {
+   "sha256": "f07eaf9f0696004ca8b07e5fb95b28515a47505d00d3b74270d7a505af05bec4",
+   "bytes": 569223,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLP": {
+   "sha256": "711b8b0401d402e8b28facc4726054860dd491a3145fe780775be2a12a5af59d",
+   "bytes": 558731,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLU": {
+   "sha256": "f39747a5630553d05d8e2703de4e7241c40a4ac5b71702813ebed8715f941165",
+   "bytes": 566219,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLV": {
+   "sha256": "f7a8ae4f80f2c809b0aca2a81f645e38cc44f019df50a14780966af64f96a11d",
+   "bytes": 566675,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XLY": {
+   "sha256": "fdee6dfc65b6b73f97c05c811e61f92ee7f78e78c92b8365c6688a4993e5c062",
+   "bytes": 566553,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XOP": {
+   "sha256": "9b35c6e51f778884993b5f3d171599c009376dab9c379a0acca6479b7c4b68ad",
+   "bytes": 565542,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XRT": {
+   "sha256": "8e75763c532520b17af6e3f427de50d64abac40bb85f7184259dddce8be92cd5",
+   "bytes": 554987,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  },
+  "XSD": {
+   "sha256": "08ddb786cc78b1c011579a3274f9ac874111f406a4c139a03aa20a2d81bd1fda",
+   "bytes": 551146,
+   "rows": 4184,
+   "start": "2010-01-04",
+   "end": "2026-08-21",
+   "price_col": "adjClose"
+  }
+ }
+}
