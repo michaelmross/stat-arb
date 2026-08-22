@@ -1,6 +1,9 @@
 # stat-arb — measured negative results in retail statistical arbitrage
 
-**Repository:** https://github.com/michaelmross/stat-arb
+Data, code, and figures for **[Cost Viability and Cointegration Are Anti-Correlated
+in Liquid US ETF Pairs: A ground-truth-validated negative result for
+daily-frequency statistical arbitrage](https://doi.org/10.5281/zenodo.22059837)**
+(M. M. Ross, 2026).
 
 [![verify](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml/badge.svg)](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml)
 
@@ -396,20 +399,6 @@ python code/fractional_census.py --anchors   # derive fig_dcensus anchor bands
 python code/kalman_variant.py --costs        # -> kalman_cost_attribution.json
 ```
 
-Two things this repo does **not** establish. No TeX toolchain is
-installed here, so the note has been structurally validated but never
-compiled here, and its source is not kept in this repository. Figure PDFs are also
-not byte-reproducible across matplotlib and platform builds; the
-underlying census data reproduces to 1e-15, the bytes do not.
-
-Scope note: the note is now **v4**. It covers the initial scan, the
-fixed-income cohort, the March 2020 episode, lag policy, the
-identification controls, the ungated online variant, and the
-fractional-integration census — all five figures are referenced. It does
-**not** cover the production-margin study, which postdates it; that work
-lives in this README and in `futures_results.json`, and is the material
-for a possible second note.
-
 ### Data availability
 
 Price CSVs are not redistributable (Tiingo terms for the ETF panel;
@@ -558,8 +547,7 @@ The write-up is *Cost Viability and Cointegration Are Anti-Correlated
 in Liquid US ETF Pairs: A ground-truth-validated negative result for
 daily-frequency statistical arbitrage*, Michael M. Ross, 2026. Its
 LaTeX source is maintained outside this repository, which holds the
-apparatus, the archived results, and the figures. A Zenodo DOI is reserved at tagging;
-cite that in preference to the repository URL once it exists.
+apparatus, the archived results, and the figures.
 
 ## License
 
