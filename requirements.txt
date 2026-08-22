@@ -1,7 +1,3 @@
-# Pinned to the environment the archived results were computed on
-# (2026-08-21/22). Loosen the pins only after re-running the full
-# validation suite -- the pandas 3.0 boolean-index change already broke
-# one code path silently once.
 numpy>=2.0
 scipy>=1.14
 pandas>=2.2
