@@ -50,6 +50,69 @@ def simulate_ou(n: int, kappa: float, mu: float, sigma: float,
     return s
 
 
+def make_margin(n: int, rng: np.random.Generator, kind: str = "ou",
+                half_life: float = 20.0, level_sd: float = 10.4,
+                roll_every: int = 21, roll_offset_sd: float = 2.14,
+                roll_offset_mean: float = -0.23, dt: float = 1 / 252):
+    """Roll-gap null: a production margin observed through stitched fronts.
+
+    This is the futures universe's `noisy_rw` -- the structure real series
+    have that the clean generators lack. Returns (observed, roll_mask,
+    truth_dict).
+
+      kind='ou'  mean-reverting margin (H1: a real physical tether)
+      kind='rw'  random-walk margin    (H0: no tether)
+
+    Contract offsets are PIECEWISE CONSTANT, not cumulative. Modelling
+    each roll as an increment to a running sum would make the observed
+    series contain a genuine random walk: ~200 rolls at the crack's
+    observed step sd of 2.14 gives a cumulative component of sd ~30
+    against a margin sd of 10.4, which would swamp everything. Real crack
+    margins plainly do not wander like that, because the roll step is the
+    calendar spread -- itself mean-reverting and seasonal. So each
+    contract carries an iid offset that RESETS at the next roll:
+
+        observed_t = margin_t + offset_{contract(t)}
+
+    Defaults are calibrated to the real 3-2-1 crack (level sd 10.4 $/bbl,
+    roll-step sd 2.14, mean -0.23 reflecting average contango).
+    """
+    kappa = np.log(2.0) / (half_life * dt)
+    if kind == "ou":
+        sigma = level_sd * np.sqrt(2.0 * kappa)
+        margin = simulate_ou(n, kappa, mu=0.0, sigma=sigma, dt=dt, rng=rng)
+    elif kind == "rw":
+        # scaled so the sample sd is comparable to the OU case
+        step = level_sd / np.sqrt(n / 6.0)
+        margin = np.cumsum(rng.normal(0.0, step, n))
+        margin -= margin.mean()
+    else:
+        raise ValueError(f"unknown kind: {kind}")
+
+    roll_idx = np.arange(roll_every, n, roll_every)
+    mask = np.zeros(n, dtype=bool)
+    mask[roll_idx] = True
+    offsets = np.zeros(n)
+    bounds = np.concatenate(([0], roll_idx, [n]))
+    for i in range(len(bounds) - 1):
+        offsets[bounds[i]:bounds[i + 1]] = rng.normal(roll_offset_mean,
+                                                      roll_offset_sd)
+    return margin + offsets, mask, dict(kind=kind, half_life=half_life,
+                                        level_sd=level_sd, n_rolls=len(roll_idx))
+
+
+def dejump(x: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """Remove roll-day increments: diff, zero the masked steps, re-cumulate.
+
+    For TESTING only. This is not back-adjustment of a traded series --
+    the level (the anchor) is untouched in `futures.build_margin`. It just
+    stops contract-offset steps from being read as margin dynamics.
+    """
+    d = np.diff(x)
+    d[mask[1:]] = 0.0
+    return np.concatenate(([x[0]], x[0] + np.cumsum(d)))
+
+
 def add_micro_noise(logp, logq, bp: float, rng: np.random.Generator):
     """Independent iid observation noise on each leg, in basis points.
 
