@@ -52,7 +52,7 @@ jobs:
       - name: Universe invariants
         run: |
           python - <<'PY'
-          from statarb.universe import candidate_pairs, all_tickers
+          from stat-arb.universe import candidate_pairs, all_tickers
           c = candidate_pairs()
           keys = {tuple(sorted((x.a, x.b))) for x in c}
           assert len(keys) == len(c), "duplicate pairs in universe"
