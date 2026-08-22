@@ -4,8 +4,8 @@ pandas>=2.2
 statsmodels>=0.14.6
 matplotlib>=3.9
 
+#Required for fresh price data
 # fetch_data.py (Tiingo, token required)
 requests>=2.32
-
 # fetch_futures.py (Yahoo, no key)
 yfinance>=0.2.40
