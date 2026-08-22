@@ -26,10 +26,10 @@ Run:  python controls_and_power.py
 
 import numpy as np
 from scipy.stats import spearmanr
-from statarb.synth import make_pair
-from statarb.coint import engle_granger
-from statarb.ou import fit_ou
-from statarb.backtest import zscore_backtest
+from synth import make_pair
+from coint import engle_granger
+from ou import fit_ou
+from backtest import zscore_backtest
 
 COST_RT = 4e-4  # round-trip cost on capital (2bp/leg one-way)
 

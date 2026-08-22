@@ -17,10 +17,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from statarb.synth import make_pair
-from statarb.coint import engle_granger
-from statarb.data import load_prices, load_panel, detect_source
-from statarb.universe import candidate_pairs, all_tickers
+from synth import make_pair
+from coint import engle_granger
+from data import load_prices, load_panel, detect_source
+from universe import candidate_pairs, all_tickers
 
 PASS, FAIL = "  ok  ", " FAIL "
 _failures = []

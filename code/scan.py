@@ -31,11 +31,13 @@ from dataclasses import dataclass, asdict
 import numpy as np
 import pandas as pd
 
-from statarb.data import load_panel
-from statarb.universe import candidate_pairs, all_tickers
-from statarb.coint import engle_granger, benjamini_hochberg
-from statarb.ou import fit_ou
-from statarb.backtest import zscore_backtest, _perf
+import paths
+
+from data import load_panel
+from universe import candidate_pairs, all_tickers
+from coint import engle_granger, benjamini_hochberg
+from ou import fit_ou
+from backtest import zscore_backtest, _perf
 from statsmodels.tsa.stattools import acf
 
 
@@ -124,7 +126,7 @@ def evaluate(panel, a, b, relation, discovery_end, cost_bps=2.0,
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data-dir", required=True)
+    ap.add_argument("--data-dir", default=str(paths.PRICES))
     ap.add_argument("--discovery-end", required=True,
                     help="last date usable for pair SELECTION, YYYY-MM-DD")
     ap.add_argument("--q", type=float, default=0.05, help="BH FDR level")
@@ -137,6 +139,8 @@ def main():
     args = ap.parse_args()
 
     cands = candidate_pairs(include_controls=not args.no_controls)
+    paths.require_prices('etf', min_files=2,
+                         directory=args.data_dir)
     panel = load_panel(args.data_dir, tickers=all_tickers())
     have = set(panel.log_prices.columns)
     print(f"Loaded {len(have)}/{len(all_tickers())} tickers  "

@@ -3,7 +3,7 @@
 The headline cell now lives in statarb/validate.py as cell 6; this
 script keeps the calibration diagnostics that derived it -- it shows
 HOW the noisy_rw null was matched to real SPY/IVV, which validate.py
-only consumes. The generator itself is statarb.synth.make_pair.
+only consumes. The generator itself is synth.make_pair.
 
 Original note follows.
 
@@ -48,7 +48,7 @@ import numpy as np
 import statsmodels.api as sm
 from statsmodels.tsa.stattools import coint
 
-from statarb.synth import make_pair, add_micro_noise
+from synth import make_pair, add_micro_noise
 
 # lag policies to compare: (label, kwargs to statsmodels.coint)
 POLICIES = [

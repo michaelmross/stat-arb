@@ -22,10 +22,10 @@ coverage, not the estimator.
 """
 
 import numpy as np
-from .synth import make_pair
-from .coint import engle_granger, adf_naive, benjamini_hochberg
-from .ou import fit_ou
-from .backtest import zscore_backtest
+from synth import make_pair
+from coint import engle_granger, adf_naive, benjamini_hochberg
+from ou import fit_ou
+from backtest import zscore_backtest
 
 
 def run(n_sims: int = 200, n_obs: int = 1500, seed: int = 20260821,

@@ -26,7 +26,7 @@ from __future__ import annotations
 import numpy as np
 from statsmodels.tsa.stattools import adfuller
 
-from statarb.synth import make_margin, dejump
+from synth import make_margin, dejump
 from fractional_census import elw
 
 # calibrated to the two confirmatory spreads (see fetch_futures diagnostics)

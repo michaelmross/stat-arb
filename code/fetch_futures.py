@@ -34,6 +34,8 @@ TWO THINGS THAT WILL BITE IF IGNORED
 
 from __future__ import annotations
 
+import paths
+
 import argparse
 import time
 from pathlib import Path
@@ -130,7 +132,7 @@ def roll_diagnostics(out_dir: Path, tickers, jump_sigma=5.0):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="futures")
+    ap.add_argument("--out", default=str(paths.FUTURES))
     ap.add_argument("--start", default="2010-01-01")
     ap.add_argument("--end", default=None)
     ap.add_argument("--spreads", nargs="*", default=list(SPREADS),

@@ -6,11 +6,11 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from statarb.synth import make_pair
-from statarb.coint import engle_granger
-from statarb.ou import fit_ou
-from statarb.kalman import kalman_hedge
-from statarb.backtest import zscore_backtest
+from synth import make_pair
+from coint import engle_granger
+from ou import fit_ou
+from kalman import kalman_hedge
+from backtest import zscore_backtest
 
 rng = np.random.default_rng(7)
 logp, logq, truth = make_pair("cointegrated", n=2000, rng=rng)

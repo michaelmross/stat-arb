@@ -24,14 +24,16 @@ Run:  python check_claims.py
 
 from __future__ import annotations
 
+import paths
+
 import json
 import numpy as np
 from scipy import stats
 
-from statarb.synth import make_pair
-from statarb.coint import engle_granger
-from statarb.ou import fit_ou
-from statarb.backtest import zscore_backtest
+from synth import make_pair
+from coint import engle_granger
+from ou import fit_ou
+from backtest import zscore_backtest
 
 
 def hl_to_kappa(half_life_days):
@@ -88,7 +90,7 @@ def c2_power_vs_amplitude(n_sims=25, n_obs=4000, half_life=5.0,
     return out
 
 
-def c3_sharpe_tstats(path="scan_full.json"):
+def c3_sharpe_tstats(path=str(paths.data("scan_full.json"))):
     """Is 'indistinguishable from zero' actually true for each pair?"""
     res = json.load(open(path))["evaluation"]
     print("\nC3  t-stats on realised OOS Sharpes  (t ~ SR * sqrt(years))")

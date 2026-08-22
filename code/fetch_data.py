@@ -27,6 +27,8 @@ Either way the result is one CSV per ticker in --out, ready for scan.py.
 
 from __future__ import annotations
 
+import paths
+
 import argparse
 import os
 import sys
@@ -35,8 +37,8 @@ from pathlib import Path
 
 import requests
 
-from statarb.universe import all_tickers
-from statarb.data import load_prices
+from universe import all_tickers
+from data import load_prices
 
 TIINGO_URL = "https://api.tiingo.com/tiingo/daily/{ticker}/prices"
 DEFAULT_TOKEN_FILE = Path(__file__).with_name(".tiingo_token")
@@ -152,7 +154,7 @@ def verify(out_dir: Path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", choices=["tiingo", "stooq"], default="tiingo")
-    ap.add_argument("--out", default="data")
+    ap.add_argument("--out", default=str(paths.PRICES))
     ap.add_argument("--start", default="2010-01-01")
     ap.add_argument("--end", default=None)
     ap.add_argument("--tickers", nargs="*", default=None,

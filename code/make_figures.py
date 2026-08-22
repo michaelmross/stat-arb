@@ -31,6 +31,8 @@ Both gaps are under 0.25 se of the mean.
 """
 
 from __future__ import annotations
+
+import paths
 import argparse
 import json
 from pathlib import Path
@@ -42,9 +44,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-from statarb.coint import engle_granger
-from statarb.ou import fit_ou
-from statarb.backtest import zscore_backtest
+from coint import engle_granger
+from ou import fit_ou
+from backtest import zscore_backtest
 from statsmodels.tsa.stattools import acf
 
 plt.rcParams.update({"font.size": 9, "axes.titlesize": 9.5,
@@ -227,10 +229,10 @@ def fig_dcensus(census: pd.DataFrame, out: Path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--scan", default="scan_v2.json")
-    ap.add_argument("--census", default="fractional_census_results.json")
-    ap.add_argument("--data", default="data")
-    ap.add_argument("--out", default=".")
+    ap.add_argument("--scan", default=str(paths.data("scan_v2.json")))
+    ap.add_argument("--census", default=str(paths.data("fractional_census_results.json")))
+    ap.add_argument("--data", default=str(paths.PRICES))
+    ap.add_argument("--out", default=str(paths.FIGURES))
     args = ap.parse_args()
 
     data_dir, out = Path(args.data), Path(args.out)

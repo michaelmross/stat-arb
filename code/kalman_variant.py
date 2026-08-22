@@ -19,6 +19,8 @@ Honesty constraints:
 """
 
 from __future__ import annotations
+
+import paths
 import numpy as np
 
 
@@ -95,7 +97,7 @@ def kalman_trade(logp, logq, delta=1e-5, burn=252,
 def calibrate(deltas=(1e-4, 1e-5, 1e-6), widths_bp=(12, 16, 44),
               n_sims=25, n_obs=2000, kappa=25.0, seed=777):
     """Pick delta on synthetic cointegrated pairs (ground truth only)."""
-    from statarb.synth import make_pair
+    from synth import make_pair
     rng = np.random.default_rng(seed)
     table = {}
     for d in deltas:
@@ -111,8 +113,8 @@ def calibrate(deltas=(1e-4, 1e-5, 1e-6), widths_bp=(12, 16, 44),
     return best, table
 
 
-def run_real(scan_path="scan_v2.json", data_dir="data", delta=1e-6,
-             discovery_end="2018-12-31", out="kalman_results.json"):
+def run_real(scan_path=str(paths.data("scan_v2.json")), data_dir=str(paths.PRICES), delta=1e-6,
+             discovery_end="2018-12-31", out=str(paths.data("kalman_results.json"))):
     """Run the online variant on the pairs the walk-forward scan evaluated.
 
     Same pairs, same out-of-sample window, same costs -- so the only
@@ -123,7 +125,8 @@ def run_real(scan_path="scan_v2.json", data_dir="data", delta=1e-6,
     """
     import json
     import pandas as pd
-    from statarb.data import load_panel
+    from data import load_panel
+    paths.require_prices('etf', min_files=2)
 
     scan = json.load(open(scan_path))
     panel = load_panel(data_dir)
@@ -148,9 +151,9 @@ def run_real(scan_path="scan_v2.json", data_dir="data", delta=1e-6,
     return rows
 
 
-def cost_attribution(scan_path="scan_v2.json", data_dir="data", delta=1e-6,
+def cost_attribution(scan_path=str(paths.data("scan_v2.json")), data_dir=str(paths.PRICES), delta=1e-6,
                      discovery_end="2018-12-31",
-                     out="kalman_cost_attribution.json"):
+                     out=str(paths.data("kalman_cost_attribution.json"))):
     """Re-run each pair at zero cost to split churn from adverse level.
 
     A large negative online Sharpe has two possible causes. If it comes
@@ -164,7 +167,8 @@ def cost_attribution(scan_path="scan_v2.json", data_dir="data", delta=1e-6,
     """
     import json
     import pandas as pd
-    from statarb.data import load_panel
+    from data import load_panel
+    paths.require_prices('etf', min_files=2)
 
     scan = json.load(open(scan_path))
     panel = load_panel(data_dir)

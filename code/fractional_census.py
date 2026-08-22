@@ -19,6 +19,8 @@ two-step mean correction changes nothing material here).
 """
 
 from __future__ import annotations
+
+import paths
 import numpy as np
 
 
@@ -61,7 +63,7 @@ def arfima(n, d, rng):
 
 
 def validate(n=2264, n_sims=40, seed=90210):
-    from statarb.synth import make_pair, add_micro_noise
+    from synth import make_pair, add_micro_noise
     import statsmodels.api as sm
     rng = np.random.default_rng(seed)
     print(f"ELW validation, n={n}, m={int(n**0.6)}, "
@@ -87,7 +89,7 @@ def validate(n=2264, n_sims=40, seed=90210):
         print(f"  {label}: d_hat = {np.mean(est):+.3f} +/- {np.std(est):.3f}")
 
 
-def anchors(scan_path="scan_v2.json", n=2264, n_sims=40, seed_ou=555,
+def anchors(scan_path=str(paths.data("scan_v2.json")), n=2264, n_sims=40, seed_ou=555,
             seed_rw=90210):
     """Recompute the two ground-truth anchor bands drawn on fig_dcensus.
 
@@ -106,7 +108,7 @@ def anchors(scan_path="scan_v2.json", n=2264, n_sims=40, seed_ou=555,
     import json
     import numpy as _np
     import statsmodels.api as sm
-    from statarb.synth import make_pair
+    from synth import make_pair
 
     bh = [r for r in json.load(open(scan_path))["discovery"] if r["bh"]]
     hl = float(_np.median([r["half_life"] for r in bh]))
@@ -139,8 +141,8 @@ def anchors(scan_path="scan_v2.json", n=2264, n_sims=40, seed_ou=555,
     return out
 
 
-def census(scan_path="scan_v2.json", data_dir="data",
-           discovery_end="2018-12-31", out="fractional_census_results.json"):
+def census(scan_path=str(paths.data("scan_v2.json")), data_dir=str(paths.PRICES),
+           discovery_end="2018-12-31", out=str(paths.data("fractional_census_results.json"))):
     """Estimate d for every tested discovery-window spread in a scan.
 
     Recomputes each spread the same way scan.py did -- Engle-Granger OLS
@@ -149,8 +151,9 @@ def census(scan_path="scan_v2.json", data_dir="data",
     """
     import json
     import pandas as pd
-    from statarb.data import load_panel
-    from statarb.coint import engle_granger
+    from data import load_panel
+    paths.require_prices('etf', min_files=2)
+    from coint import engle_granger
 
     scan = json.load(open(scan_path))
     rows = scan["discovery"]

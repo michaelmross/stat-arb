@@ -11,26 +11,29 @@ survive). This script asks which.
 
 from __future__ import annotations
 
+import paths
+
 import json
 import numpy as np
 import pandas as pd
 
-from statarb.data import load_panel
-from statarb.coint import engle_granger
-from statarb.ou import fit_ou
-from statarb.backtest import zscore_backtest, _perf
+from data import load_panel
+from coint import engle_granger
+from ou import fit_ou
+from backtest import zscore_backtest, _perf
 
 CRISIS = ("2020-02-15", "2020-04-30")
 SPLIT = "2018-12-31"
 
 
 def main():
-    res = json.load(open("scan_v2.json"))
+    res = json.load(open(str(paths.data("scan_v2.json"))))
     ev = pd.DataFrame(res["evaluation"])
     disc = pd.DataFrame(res["discovery"])
     meta = disc.set_index(disc.a + "/" + disc.b)
 
-    panel = load_panel("data")
+    paths.require_prices('etf', min_files=2)
+    panel = load_panel(str(paths.PRICES))
 
     print("=== significance of realised OOS Sharpes ===")
     print(f"{'pair':12s} {'cohort':17s} {'Sharpe':>7s} {'t':>6s} "
@@ -102,7 +105,7 @@ def main():
     print(f"\nblew through the 4-sigma stop: {(o.peak_z > 4).sum()}/{len(o)}")
     print(f"total crisis-window return, equal-weighted: "
           f"{o.crisis_ret.mean():+.2%}")
-    o.to_json("crisis_2020.json", orient="records", indent=2)
+    o.to_json(str(paths.data("crisis_2020.json")), orient="records", indent=2)
     print("\nwrote crisis_2020.json")
 
 

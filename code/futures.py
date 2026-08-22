@@ -245,7 +245,7 @@ def backtest_margin(margin: "Margin", train: int = 504, trade: int = 126,
     transaction costs is charged, since all legs really were traded.
     """
     from statsmodels.tsa.stattools import adfuller
-    from statarb.synth import dejump
+    from synth import dejump
 
     x = margin.value.to_numpy(float)
     roll = margin.roll

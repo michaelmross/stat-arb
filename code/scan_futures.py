@@ -25,16 +25,18 @@ bias measured at each margin's own fitted half-life and level sd.
 
 from __future__ import annotations
 
+import paths
+
 import json
 
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller, acf
 
-from statarb.data import load_panel
-from statarb.futures import (SPREADS, build_margin, backtest_margin,
+from data import load_panel
+from futures import (SPREADS, build_margin, backtest_margin,
                              fit_ou_masked, cost_per_side)
-from statarb.synth import make_margin, dejump
+from synth import make_margin, dejump
 from fractional_census import elw
 
 SPLIT = "2018-12-31"
@@ -54,7 +56,8 @@ def d_anchor(half_life, level_sd, n, rng, n_sims=25):
 
 def main():
     rng = np.random.default_rng(20260822)
-    panel = load_panel("futures", prefer_adjusted=False, log_transform=False)
+    paths.require_prices('futures', min_files=3)
+    panel = load_panel(str(paths.FUTURES), prefer_adjusted=False, log_transform=False)
     out = []
 
     for name, sp in SPREADS.items():
@@ -119,7 +122,7 @@ def main():
                         windows_tradable=bt["windows_tradable"],
                         cost_per_side=bt["cost_per_side"]))
 
-    with open("futures_results.json", "w") as f:
+    with open(str(paths.data("futures_results.json")), "w") as f:
         json.dump(out, f, indent=1)
     print("wrote futures_results.json")
 
