@@ -1,0 +1,16 @@
+# Vendor price data — not redistributable (Tiingo, Yahoo).
+# code/paths.py expects these to exist but be empty on a fresh clone.
+prices/
+futures/
+
+# Credentials
+.tiingo_token
+*.token
+
+# Python
+__pycache__/
+*.pyc
+
+# Local scratch: leading-hyphen dirs are dead, zips are bulk data
+-*
+*.zip
