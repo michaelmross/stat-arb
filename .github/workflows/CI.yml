@@ -1,23 +1,5 @@
 name: verify
 
-# The repository's standing claim is that every estimator is validated on
-# synthetic ground truth before it touches real data, and that every number
-# in the note traces to an archived artifact. This workflow enforces the
-# half of that which needs no price data: ground-truth cells, structural
-# checks on the write-up, and an actual LaTeX build.
-#
-# What is deliberately NOT here: anything requiring data/ or futures/.
-# Those CSVs are not redistributable, so scan.py, scan_futures.py,
-# make_figures.py, analyse_v2.py, and the --census / --real / --costs
-# drivers cannot run in CI. They are covered by the archived JSONs and by
-# local reproduction instead.
-#
-# The LaTeX build is also deliberately out of scope. texcheck.py catches
-# the structural failures (missing figures, dangling refs, uncited
-# bibitems, unbalanced environments); the compile itself stays local, so
-# the note's claim of being built is a claim about the author's machine,
-# not about this workflow.
-
 on:
   push:
     branches: [main]
