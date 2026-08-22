@@ -49,7 +49,7 @@ its own initial diagnosis was wrong and was corrected on ground truth.
 | `validate_lag.py` | Standalone deep-dive on ADF lag policy: how the `noisy_rw` null was calibrated to a real pair, and the size/power table it produced. |
 | `test_data.py` | Ground-truth tests for the real-data path (29 checks): CSV round-trip fidelity, beta recovery through disk, dirty-data detection, universe invariants, end-to-end scan. |
 | `fractional_census.py` | Exact local Whittle (Shimotsu–Phillips) memory-parameter estimator. `validate()` on ARFIMA ground truth, `anchors()` for the figure's calibration bands, `--census` for the 130-spread census. |
-| `kalman_variant.py` | Roadmap 2: fully online Kalman-innovation strategy. `calibrate()` picks delta on synthetics only; `--real` evaluates the scan's pairs. |
+| `kalman_variant.py` | Fully online Kalman-innovation strategy. `calibrate()` picks delta on synthetics only; `--real` evaluates the scan's pairs. |
 | `controls_and_power.py` | Adversarial checks behind the v2 revision: no-market control universes for the p-vs-edge correlation, power vs spread amplitude, and Sharpe t-stats. |
 | `make_figures.py` | Regenerates all five figures from `scan_v2.json` + census + `data/`. |
 | `texcheck.py` | Structural integrity check on `etf_pairs_note.tex` — figure targets, `\ref` resolution, citations, environment and brace balance. Not a compiler; catches what would break a build or silently emit `??`. |
@@ -220,7 +220,7 @@ among bond ETFs is real, detectable, and replicates on fresh pairs; its
 spreads are still too thin to clear 2bp/leg in calm markets, and in the
 one episode wide enough to pay, the relationship broke by up to 72σ.
 
-## Roadmap 2 — Kalman-innovation variant (done, negative)
+## The gate, isolated — an ungated online variant (done, negative)
 
 `kalman_variant.py`. Fully online: state `(alpha_t, beta_t)` is a random
 walk, the signal is the standardized one-step innovation, and there are
@@ -253,7 +253,7 @@ null result was an abstention result. Continuous adaptation does not
 rescue a spread that has no exploitable reversion — it just collects
 more of the costs.
 
-## Roadmap 6 — fractional integration census (substantially answers it)
+## Fractional integration census — what the flag could not see
 
 `fractional_census.py`. The `noise_dominated` flag is a binary two-point
 ACF condition; the continuous version of the same question is the memory
@@ -266,7 +266,8 @@ Validation (n = 2264, nominal se 0.049): ARFIMA d = 0.0 → −0.012,
 calibrated composite nulls: OU+noise (H1) → **0.317**, RW+noise (H0) →
 **0.543**. The two separate by ~3.5 se — where the EG p-value rejected
 the H0 null 33% of the time, d̂ distinguishes them. That is what makes
-this a partial answer to roadmap 6.
+this a partial answer to the size-distortion problem the lag-policy
+study left open.
 
 Census over all 130 tested spreads:
 
@@ -397,11 +398,11 @@ underlying census data reproduces to 1e-15, the bytes do not.
 
 Scope note: the note is now **v4**. It covers the initial scan, the
 fixed-income cohort, the March 2020 episode, lag policy, the
-identification controls, the ungated online variant (roadmap 2), and the
-fractional-integration census (roadmap 6) — all five figures are
-referenced. It does **not** cover the production-margin study, which
-postdates it; that work lives in this README and in
-`futures_results.json`, and is the material for a possible second note.
+identification controls, the ungated online variant, and the
+fractional-integration census — all five figures are referenced. It does
+**not** cover the production-margin study, which postdates it; that work
+lives in this README and in `futures_results.json`, and is the material
+for a possible second note.
 
 ### Data availability
 
@@ -432,71 +433,37 @@ Reconstruct with `fetch_data.py` (ETF panel, Tiingo token required) and
 4. Position sizing is binary ±1 here. OU-optimal band placement
    (Leung–Li) and volatility targeting are natural upgrades.
 
-## Roadmap
+## Known limitations
 
-1. ~~Real data: loader for daily OHLC CSVs (Stooq/Tiingo exports), a
-   candidate-pair universe of structurally related ETFs, BH-corrected
-   scan.~~ **Done 2026-08-21 — result was negative.** See real-data
-   results above.
-2. ~~Kalman-innovation trading variant (fully online, no frozen
-   windows).~~ **Done 2026-08-21 — negative, and diagnostic.** Median OOS
-   Sharpe −0.15 against the baseline's 0.00, 3 of 10 significantly
-   negative. Established that the baseline's null result came from the
-   tradability gate abstaining, not from the estimator. See above.
-3. Johansen baskets for 3+ ETFs.
-4. Cost model refinement: half-spread + borrow; capacity estimates.
-5. Paper trading harness (broker API, dry-run mode, kill switch, size
-   caps) — only after 1–4 hold up.
+1. **The BH denominator is data-dependent.** `scan.py` aligns each pair
+   independently and applies Benjamini–Hochberg across whatever survived
+   the history filter. Pairs skipped for short history (`QQQM`, `GLDM`,
+   `USHY` families) silently shrink the test count and therefore loosen
+   the threshold for every other pair.
+2. **d̂ is descriptive, not a sized test.** The fractional-integration
+   census prices every spread on a continuous scale and separates the
+   two composite nulls (0.317 vs 0.543, ~3.5 se) where the EG p-value
+   could not — but it has no stated rejection rule, and it loses power
+   exactly where persistence is high (see the production-margin caveat
+   above).
+3. **d̂ is not a `scan.py` output column.** It costs ~15s for the whole
+   universe and the census showed it is the more informative statistic,
+   but `scan_v2.json` is the note's archived dataset: changing the
+   output schema would mean the archived file no longer matches what
+   `scan.py` emits. Deferred to a post-tag `schema_version: 3`. Until
+   then d̂ lives in `fractional_census_results.json` and joins on pair
+   name.
 
-**Read 2–5 in light of 1.** Items 2–4 all improve *extraction*, and
-extraction is not the binding constraint: cost-viable spreads and
-cointegrated spreads are close to disjoint sets in this universe. Item 5
-is explicitly gated on 1–4 holding up, and 1 did not. Roadmap 2 then
-made the point empirically — removing the tradability gate turned the
-baseline's harmless zero into significant losses, so what the
-walk-forward was measuring was mostly the gate's skill at not trading.
-
-Two smaller follow-ups that are genuinely open:
-
-6. ~~The `noisy_rw` null over-rejects at 33% even under the best lag
-   policy. A test with correct size on that null would make the scan
-   trustworthy rather than merely flagged.~~ **Substantially answered
-   2026-08-21** by the fractional-integration census: exact local
-   Whittle separates the two composite nulls (0.317 vs 0.543, ~3.5 se)
-   where the EG p-value could not, and prices every spread on a
-   continuous scale. Remaining gap: d̂ is a descriptive statistic here,
-   not yet a sized hypothesis test with a stated rejection rule.
-7. `scan.py` aligns each pair independently and applies BH across
-   whatever survived the history filter. Pairs skipped for short history
-   (`QQQM`, `GLDM`, `USHY` families) silently shrink the test count and
-   therefore loosen the BH threshold for everyone else.
-8. **Deferred by choice:** promote d̂ to a first-class `scan.py` output
-   column alongside `noise_dominated`. It costs ~15s for the whole
-   universe and the census showed d̂ is the more informative statistic.
-   Not done yet because `scan_v2.json` is the note's dataset: changing
-   the output schema now would mean the archived file no longer matches
-   what `scan.py` emits. Do it after tagging, as an explicit
-   `schema_version: 3`. Until then d̂ lives in
-   `fractional_census_results.json` and joins on pair name.
-
-9. ~~Different universe: production margins where the tether is
-   physical rather than statistical (crack, crush).~~ **Done 2026-08-22
-   — negative, and a third distinct failure mode.** Execution is
-   effectively free (a round trip is 0.32% of one margin sd for the
-   crack) but half-lives near 160 days sit far outside any
-   daily-strategy gate. Roll masking prevented a false discovery: the
-   crack's ADF p-value is 0.013 raw and 0.252 masked. See production
-   margins above.
-
-**Where the evidence points now.** Three universes, three unrelated
-reasons for the same answer, which is itself the finding: at daily
-frequency and retail cost, the binding constraint moves but never
-disappears. The remaining candidates are not better estimators on these
-universes but different structures — closed-end fund discounts (no
+**Where the evidence points.** Three universes, three unrelated reasons
+for the same answer, which is itself the finding: at daily frequency and
+retail cost the binding constraint moves but never disappears. The
+remaining candidates are not better estimators on these universes but
+different structures — closed-end fund discounts (no
 creation-redemption at all, so the width is structural and permanent
 rather than horizon-mismatched) and futures calendar spreads (a
 contractual convergence date, which none of the three tested universes
 had). Both are separate projects, and neither is started.
+
 
 ## Run
 
@@ -567,7 +534,6 @@ what is already on disk. Note that Stooq closes are split- but **not**
 dividend-adjusted: for same-index trackers the differing ex-dividend
 dates stamp a sawtooth into the log spread that reads as mean reversion
 and is not tradable. Prefer Tiingo `adjClose`.
-
 
 ## Citing this work
 
