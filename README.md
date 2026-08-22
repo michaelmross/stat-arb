@@ -1,4 +1,4 @@
-# statarb — Cointegration-Based ETF Pairs Framework
+# stat-arb — Cointegration-Based ETF Pairs Framework
 
 A validated pipeline for statistical arbitrage research on ETF pairs:
 Engle–Granger cointegration testing, Ornstein–Uhlenbeck spread modeling,
