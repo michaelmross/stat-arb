@@ -1,5 +1,23 @@
 name: verify
 
+# The repository's standing claim is that every estimator is validated on
+# synthetic ground truth before it touches real data, and that every number
+# in the note traces to an archived artifact. This workflow enforces the
+# half of that which needs no price data: ground-truth cells, structural
+# checks on the write-up, and an actual LaTeX build.
+#
+# What is deliberately NOT here: anything requiring data/ or futures/.
+# Those CSVs are not redistributable, so scan.py, scan_futures.py,
+# make_figures.py, analyse_v2.py, and the --census / --real / --costs
+# drivers cannot run in CI. They are covered by the archived JSONs and by
+# local reproduction instead.
+#
+# The LaTeX build is also deliberately out of scope. texcheck.py catches
+# the structural failures (missing figures, dangling refs, uncited
+# bibitems, unbalanced environments); the compile itself stays local, so
+# the note's claim of being built is a claim about the author's machine,
+# not about this workflow.
+
 on:
   push:
     branches: [main]
@@ -9,6 +27,16 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+# The package lives at the repo root as statarb/, and the root-level
+# drivers (test_data.py, fractional_census.py, kalman_variant.py) import
+# from it. Relying on Python's implicit "cwd is on sys.path" is fragile:
+# `python script.py` puts the SCRIPT's directory on the path, not the
+# working directory, so which invocation form a step uses changes whether
+# the import resolves. Setting PYTHONPATH once makes it explicit for all
+# of them.
+env:
+  PYTHONPATH: ${{ github.workspace }}
 
 jobs:
   ground-truth:
@@ -38,13 +66,31 @@ jobs:
             print('numpy', numpy.__version__); print('pandas', pandas.__version__); \
             print('statsmodels', statsmodels.__version__)"
 
+      - name: Repository layout
+        run: |
+          echo "cwd: $(pwd)"
+          echo "PYTHONPATH: ${PYTHONPATH:-<unset>}"
+          echo "--- top level ---"
+          ls -a
+          echo "--- package ---"
+          if [ -d statarb ]; then
+            ls statarb
+            [ -f statarb/__init__.py ] \
+              && echo "statarb/__init__.py present" \
+              || echo "WARNING: statarb/__init__.py MISSING"
+          else
+            echo "ERROR: no statarb/ directory at the repo root"
+            exit 1
+          fi
+          python -c "import sys; print('sys.path[0:3]:', sys.path[:3])"
+
       - name: Import smoke test
         run: |
           python - <<'PY'
           import importlib
-          for m in ("stat-arb.synth", "stat-arb.coint", "stat-arb.ou",
-                    "stat-arb.kalman", "stat-arb.backtest", "stat-arb.data",
-                    "stat-arb.universe", "stat-arb.futures", "stat-arb.validate"):
+          for m in ("statarb.synth", "statarb.coint", "statarb.ou",
+                    "statarb.kalman", "statarb.backtest", "statarb.data",
+                    "statarb.universe", "statarb.futures", "statarb.validate"):
               importlib.import_module(m)
           print("all modules import")
           PY
@@ -52,7 +98,7 @@ jobs:
       - name: Universe invariants
         run: |
           python - <<'PY'
-          from stat-arb.universe import candidate_pairs, all_tickers
+          from statarb.universe import candidate_pairs, all_tickers
           c = candidate_pairs()
           keys = {tuple(sorted((x.a, x.b))) for x in c}
           assert len(keys) == len(c), "duplicate pairs in universe"
@@ -100,7 +146,7 @@ jobs:
           # be materially better.
           import numpy as np
           from statsmodels.tsa.stattools import adfuller
-          from stat-arb.synth import make_margin, dejump
+          from statarb.synth import make_margin, dejump
           rng = np.random.default_rng(20260822)
           raw = msk = 0
           N = 25
@@ -118,7 +164,7 @@ jobs:
       - name: Margin constructors (hand-checked values)
         run: |
           python - <<'PY'
-          from stat-arb.futures import SPREADS
+          from statarb.futures import SPREADS
           px = {"CL_F": 60.0, "RB_F": 1.70, "HO_F": 1.90,
                 "ZS_F": 1000.0, "ZM_F": 300.0, "ZL_F": 30.0}
           for name, expect in (("crack_321", 14.2), ("board_crush", -0.1)):
@@ -127,6 +173,19 @@ jobs:
               assert abs(got - expect) < 1e-9, f"{name}: {got} != {expect}"
               print(f"  {name}: {got:+.4f} {sp.unit}")
           PY
+
+  paper:
+    name: write-up (structure only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Structural check
+        run: python texcheck.py paper/etf_pairs_note.tex
 
   full-validation:
     name: full validation suite (manual)
@@ -147,8 +206,8 @@ jobs:
           pip install -r requirements.txt || \
             pip install numpy scipy pandas statsmodels matplotlib
 
-      - name: stat-arb.validate (all six cells, seed 20260821)
-        run: python -m stat-arb.validate | tee validation_results.json
+      - name: statarb.validate (all six cells, seed 20260821)
+        run: python -m statarb.validate | tee validation_results.json
 
       - name: Lag-policy deep dive
         run: python validate_lag.py | tee lag_policy_results.txt
