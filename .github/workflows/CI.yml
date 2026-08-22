@@ -42,9 +42,9 @@ jobs:
         run: |
           python - <<'PY'
           import importlib
-          for m in ("statarb.synth", "statarb.coint", "statarb.ou",
-                    "statarb.kalman", "statarb.backtest", "statarb.data",
-                    "statarb.universe", "statarb.futures", "statarb.validate"):
+          for m in ("stat-arb.synth", "stat-arb.coint", "stat-arb.ou",
+                    "stat-arb.kalman", "stat-arb.backtest", "stat-arb.data",
+                    "stat-arb.universe", "stat-arb.futures", "stat-arb.validate"):
               importlib.import_module(m)
           print("all modules import")
           PY
@@ -100,7 +100,7 @@ jobs:
           # be materially better.
           import numpy as np
           from statsmodels.tsa.stattools import adfuller
-          from statarb.synth import make_margin, dejump
+          from stat-arb.synth import make_margin, dejump
           rng = np.random.default_rng(20260822)
           raw = msk = 0
           N = 25
@@ -118,7 +118,7 @@ jobs:
       - name: Margin constructors (hand-checked values)
         run: |
           python - <<'PY'
-          from statarb.futures import SPREADS
+          from stat-arb.futures import SPREADS
           px = {"CL_F": 60.0, "RB_F": 1.70, "HO_F": 1.90,
                 "ZS_F": 1000.0, "ZM_F": 300.0, "ZL_F": 30.0}
           for name, expect in (("crack_321", 14.2), ("board_crush", -0.1)):
@@ -147,8 +147,8 @@ jobs:
           pip install -r requirements.txt || \
             pip install numpy scipy pandas statsmodels matplotlib
 
-      - name: statarb.validate (all six cells, seed 20260821)
-        run: python -m statarb.validate | tee validation_results.json
+      - name: stat-arb.validate (all six cells, seed 20260821)
+        run: python -m stat-arb.validate | tee validation_results.json
 
       - name: Lag-policy deep dive
         run: python validate_lag.py | tee lag_policy_results.txt
