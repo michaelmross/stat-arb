@@ -2,6 +2,8 @@
 
 **Repository:** https://github.com/michaelmross/stat-arb
 
+[![verify](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml/badge.svg)](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml)
+
 A validated research pipeline — Engle–Granger cointegration testing,
 Ornstein–Uhlenbeck spread modeling, Kalman-filtered hedge ratios, exact
 local Whittle memory estimation, and a look-ahead-free walk-forward
