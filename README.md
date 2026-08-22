@@ -6,6 +6,7 @@ daily-frequency statistical arbitrage](https://doi.org/10.5281/zenodo.22059837)*
 (M. M. Ross, 2026).
 
 [![verify](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml/badge.svg)](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.1342908584-blue.svg)](https://doi.org/10.5281/zenodo.22060550)
 
 A validated research pipeline — Engle–Granger cointegration testing,
 Ornstein–Uhlenbeck spread modeling, Kalman-filtered hedge ratios, exact
