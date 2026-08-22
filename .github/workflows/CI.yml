@@ -1,0 +1,172 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ground-truth:
+    name: ground-truth cells (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install numpy scipy pandas statsmodels matplotlib
+          fi
+          python -c "import numpy, scipy, pandas, statsmodels; \
+            print('numpy', numpy.__version__); print('pandas', pandas.__version__); \
+            print('statsmodels', statsmodels.__version__)"
+
+      - name: Import smoke test
+        run: |
+          python - <<'PY'
+          import importlib
+          for m in ("statarb.synth", "statarb.coint", "statarb.ou",
+                    "statarb.kalman", "statarb.backtest", "statarb.data",
+                    "statarb.universe", "statarb.futures", "statarb.validate"):
+              importlib.import_module(m)
+          print("all modules import")
+          PY
+
+      - name: Universe invariants
+        run: |
+          python - <<'PY'
+          from statarb.universe import candidate_pairs, all_tickers
+          c = candidate_pairs()
+          keys = {tuple(sorted((x.a, x.b))) for x in c}
+          assert len(keys) == len(c), "duplicate pairs in universe"
+          assert all(x.a != x.b for x in c), "self-pair in universe"
+          cohorts = {x.cohort for x in c}
+          assert cohorts <= {"v1", "v2_fixed_income"}, cohorts
+          print(f"{len(all_tickers())} tickers, {len(c)} pairs, cohorts {sorted(cohorts)}")
+          PY
+
+      - name: Real-data path checks (no network)
+        run: python test_data.py
+
+      - name: ELW estimator on ARFIMA ground truth
+        run: |
+          python - <<'PY'
+          # ~10s at n_sims=5. The estimator must stay unbiased across the
+          # whole d range; a regression here invalidates the census.
+          import numpy as np
+          from fractional_census import elw, arfima
+          rng = np.random.default_rng(90210)
+          for d0 in (0.0, 0.5, 1.0):
+              est = [elw(arfima(2264, d0, rng))[0] for _ in range(5)]
+              m = float(np.mean(est))
+              assert abs(m - d0) < 0.12, f"ELW bias at d={d0}: read {m:+.3f}"
+              print(f"  ARFIMA d={d0:.1f} -> d_hat {m:+.3f}")
+          PY
+
+      - name: Kalman delta calibration on synthetics
+        run: |
+          python - <<'PY'
+          # ~10s. delta must be chosen on ground truth, never on real
+          # outcomes; this pins that the calibration still selects 1e-6.
+          from kalman_variant import calibrate
+          best, table = calibrate(n_sims=8)
+          print("median synthetic Sharpe by delta:", table)
+          assert best == 1e-6, f"calibration drifted to {best}"
+          PY
+
+      - name: Roll-gap null (futures roll treatment)
+        run: |
+          python - <<'PY'
+          # ~15s at n_sims=25. The load-bearing claim is that masking
+          # restores ADF size on a random-walk margin seen through
+          # stitched contracts. Untreated must over-reject; masked must
+          # be materially better.
+          import numpy as np
+          from statsmodels.tsa.stattools import adfuller
+          from statarb.synth import make_margin, dejump
+          rng = np.random.default_rng(20260822)
+          raw = msk = 0
+          N = 25
+          for _ in range(N):
+              x, m, _ = make_margin(4183, rng, kind="rw", level_sd=0.667,
+                                    roll_offset_sd=0.208,
+                                    roll_offset_mean=-0.028)
+              raw += adfuller(x, autolag="aic")[1] < 0.05
+              msk += adfuller(dejump(x, m), autolag="aic")[1] < 0.05
+          print(f"  crush-like null: untreated {raw/N:.0%}, masked {msk/N:.0%}")
+          assert raw / N > 0.12, "untreated size no longer over-rejects"
+          assert msk < raw, "masking no longer reduces over-rejection"
+          PY
+
+      - name: Margin constructors (hand-checked values)
+        run: |
+          python - <<'PY'
+          from statarb.futures import SPREADS
+          px = {"CL_F": 60.0, "RB_F": 1.70, "HO_F": 1.90,
+                "ZS_F": 1000.0, "ZM_F": 300.0, "ZL_F": 30.0}
+          for name, expect in (("crack_321", 14.2), ("board_crush", -0.1)):
+              sp = SPREADS[name]
+              got = sum(w * px[l] for l, w in zip(sp.legs, sp.weights))
+              assert abs(got - expect) < 1e-9, f"{name}: {got} != {expect}"
+              print(f"  {name}: {got:+.4f} {sp.unit}")
+          PY
+
+  full-validation:
+    name: full validation suite (manual)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || \
+            pip install numpy scipy pandas statsmodels matplotlib
+
+      - name: statarb.validate (all six cells, seed 20260821)
+        run: python -m statarb.validate | tee validation_results.json
+
+      - name: Lag-policy deep dive
+        run: python validate_lag.py | tee lag_policy_results.txt
+
+      - name: ELW validation and census anchors
+        run: |
+          python fractional_census.py | tee elw_validation.txt
+          python fractional_census.py --anchors | tee census_anchors.txt
+
+      - name: Roll-gap null, full
+        run: python validate_roll.py | tee roll_null_results.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: validation-outputs
+          path: |
+            validation_results.json
+            lag_policy_results.txt
+            elw_validation.txt
+            census_anchors.txt
+            roll_null_results.txt
