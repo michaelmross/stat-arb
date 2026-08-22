@@ -1,5 +1,20 @@
 name: verify
 
+# Layout this workflow assumes (see code/paths.py, the single source of
+# truth):
+#
+#   code/     every .py, flat -- no package, so imports are plain
+#   data/     archived JSON artifacts  [committed]
+#   figures/  generated figure PDFs    [committed]
+#   prices/   ETF daily CSVs           [NOT committed, gitignored]
+#   futures/  futures daily CSVs       [NOT committed, gitignored]
+#
+# Daily price bars are not redistributable, so CI never has them. That is
+# a feature to be TESTED, not worked around: every step below runs on
+# synthetic ground truth or on the committed JSON, and one step asserts
+# that a price-dependent entry point degrades with an actionable message
+# rather than a traceback.
+
 on:
   push:
     branches: [main]
@@ -10,27 +25,22 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# The package lives at the repo root as statarb/, and the root-level
-# drivers (test_data.py, fractional_census.py, kalman_variant.py) import
-# from it. Relying on Python's implicit "cwd is on sys.path" is fragile:
-# `python script.py` puts the SCRIPT's directory on the path, not the
-# working directory, so which invocation form a step uses changes whether
-# the import resolves. Setting PYTHONPATH once makes it explicit for all
-# of them.
 env:
-  PYTHONPATH: ${{ github.workspace }}
+  # code/ is flat, so putting it on the path makes `from coint import ...`
+  # work in the inline heredocs below exactly as it does inside a script.
+  PYTHONPATH: ${{ github.workspace }}/code
 
 jobs:
   ground-truth:
     name: ground-truth cells (py${{ matrix.python }})
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
         python: ["3.12", "3.14"]
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
@@ -50,54 +60,92 @@ jobs:
 
       - name: Repository layout
         run: |
-          echo "cwd: $(pwd)"
-          echo "PYTHONPATH: ${PYTHONPATH:-<unset>}"
-          echo "--- top level ---"
-          ls -a
-          echo "--- package ---"
+          python code/paths.py
+          for d in code data figures; do
+            [ -d "$d" ] || { echo "ERROR: missing $d/"; exit 1; }
+          done
           if [ -d statarb ]; then
-            ls statarb
-            [ -f statarb/__init__.py ] \
-              && echo "statarb/__init__.py present" \
-              || echo "WARNING: statarb/__init__.py MISSING"
-          else
-            echo "ERROR: no statarb/ directory at the repo root"
+            echo "ERROR: statarb/ still present -- the package was flattened"
+            echo "into code/. Delete it, or this repo has two copies of the"
+            echo "same modules and imports become ambiguous."
             exit 1
           fi
-          python -c "import sys; print('sys.path[0:3]:', sys.path[:3])"
+          missing=0
+          for m in paths synth coint ou kalman backtest data universe futures \
+                   validate; do
+            [ -f "code/$m.py" ] || { echo "ERROR: code/$m.py missing"; missing=1; }
+          done
+          exit $missing
 
       - name: Import smoke test
         run: |
           python - <<'PY'
           import importlib
-          for m in ("statarb.synth", "statarb.coint", "statarb.ou",
-                    "statarb.kalman", "statarb.backtest", "statarb.data",
-                    "statarb.universe", "statarb.futures", "statarb.validate"):
+          mods = ("paths", "synth", "coint", "ou", "kalman", "backtest",
+                  "data", "universe", "futures", "validate",
+                  "fractional_census", "kalman_variant", "controls_and_power")
+          for m in mods:
               importlib.import_module(m)
-          print("all modules import")
+          print(f"all {len(mods)} modules import")
+          PY
+
+      - name: Archived JSON artifacts present and parseable
+        run: |
+          python - <<'PY'
+          import json
+          import paths
+          expected = {
+              "scan_full.json": 98,      # v1 discovery rows
+              "scan_v2.json": 130,       # merged discovery rows
+              "fractional_census_results.json": 130,
+          }
+          for name, n in expected.items():
+              p = paths.data(name)
+              assert p.exists(), f"missing artifact {p}"
+              d = json.loads(p.read_text())
+              rows = d["discovery"] if isinstance(d, dict) else d
+              assert len(rows) == n, f"{name}: {len(rows)} rows, expected {n}"
+              print(f"  {name}: {len(rows)} rows")
+          for name in ("kalman_results.json", "crisis_2020.json",
+                       "futures_results.json", "data_manifest.json"):
+              assert paths.data(name).exists(), f"missing artifact {name}"
+          print("all archived artifacts present")
           PY
 
       - name: Universe invariants
         run: |
           python - <<'PY'
-          from statarb.universe import candidate_pairs, all_tickers
+          from universe import candidate_pairs, all_tickers
           c = candidate_pairs()
           keys = {tuple(sorted((x.a, x.b))) for x in c}
           assert len(keys) == len(c), "duplicate pairs in universe"
           assert all(x.a != x.b for x in c), "self-pair in universe"
           cohorts = {x.cohort for x in c}
           assert cohorts <= {"v1", "v2_fixed_income"}, cohorts
-          print(f"{len(all_tickers())} tickers, {len(c)} pairs, cohorts {sorted(cohorts)}")
+          print(f"{len(all_tickers())} tickers, {len(c)} pairs, "
+                f"cohorts {sorted(cohorts)}")
           PY
 
       - name: Real-data path checks (no network)
-        run: python test_data.py
+        run: python code/test_data.py
+
+      - name: Price-dependent steps degrade cleanly, not with a traceback
+        run: |
+          python - <<'PY'
+          import subprocess, sys
+          r = subprocess.run(
+              [sys.executable, "code/scan.py", "--discovery-end", "2018-12-31"],
+              capture_output=True, text=True)
+          out = r.stdout + r.stderr
+          assert r.returncode != 0, "expected a non-zero exit with no price data"
+          assert "Traceback" not in out, f"raised instead of exiting:\n{out}"
+          assert "fetch_data.py" in out, f"no rebuild instruction:\n{out}"
+          print("  scan.py exits cleanly and names the fix")
+          PY
 
       - name: ELW estimator on ARFIMA ground truth
         run: |
           python - <<'PY'
-          # ~10s at n_sims=5. The estimator must stay unbiased across the
-          # whole d range; a regression here invalidates the census.
           import numpy as np
           from fractional_census import elw, arfima
           rng = np.random.default_rng(90210)
@@ -111,8 +159,6 @@ jobs:
       - name: Kalman delta calibration on synthetics
         run: |
           python - <<'PY'
-          # ~10s. delta must be chosen on ground truth, never on real
-          # outcomes; this pins that the calibration still selects 1e-6.
           from kalman_variant import calibrate
           best, table = calibrate(n_sims=8)
           print("median synthetic Sharpe by delta:", table)
@@ -122,13 +168,9 @@ jobs:
       - name: Roll-gap null (futures roll treatment)
         run: |
           python - <<'PY'
-          # ~15s at n_sims=25. The load-bearing claim is that masking
-          # restores ADF size on a random-walk margin seen through
-          # stitched contracts. Untreated must over-reject; masked must
-          # be materially better.
           import numpy as np
           from statsmodels.tsa.stattools import adfuller
-          from statarb.synth import make_margin, dejump
+          from synth import make_margin, dejump
           rng = np.random.default_rng(20260822)
           raw = msk = 0
           N = 25
@@ -146,7 +188,7 @@ jobs:
       - name: Margin constructors (hand-checked values)
         run: |
           python - <<'PY'
-          from statarb.futures import SPREADS
+          from futures import SPREADS
           px = {"CL_F": 60.0, "RB_F": 1.70, "HO_F": 1.90,
                 "ZS_F": 1000.0, "ZM_F": 300.0, "ZL_F": 30.0}
           for name, expect in (("crack_321", 14.2), ("board_crush", -0.1)):
@@ -156,56 +198,50 @@ jobs:
               print(f"  {name}: {got:+.4f} {sp.unit}")
           PY
 
-  paper:
-    name: write-up (structure only)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
-
-      - name: Structural check
-        run: python texcheck.py paper/etf_pairs_note.tex
+      - name: Roll window is the empirically chosen one
+        run: |
+          python - <<'PY'
+          import inspect
+          from futures import roll_mask
+          sig = inspect.signature(roll_mask)
+          assert sig.parameters["before"].default == 0, "roll window changed"
+          assert sig.parameters["after"].default == 1, "roll window changed"
+          print("  roll mask default -0/+1 business day (swept, not assumed)")
+          PY
 
   full-validation:
     name: full validation suite (manual)
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
           cache: pip
-
       - name: Install
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt || \
             pip install numpy scipy pandas statsmodels matplotlib
-
-      - name: statarb.validate (all six cells, seed 20260821)
-        run: python -m statarb.validate | tee validation_results.json
-
+      - name: Everything runnable without price data
+        run: python code/run_all.py --full | tee run_all_results.txt
+      - name: validate.py (all cells, seed 20260821)
+        run: python code/validate.py | tee validation_results.json
       - name: Lag-policy deep dive
-        run: python validate_lag.py | tee lag_policy_results.txt
-
+        run: python code/validate_lag.py | tee lag_policy_results.txt
       - name: ELW validation and census anchors
         run: |
-          python fractional_census.py | tee elw_validation.txt
-          python fractional_census.py --anchors | tee census_anchors.txt
-
+          python code/fractional_census.py | tee elw_validation.txt
+          python code/fractional_census.py --anchors | tee census_anchors.txt
       - name: Roll-gap null, full
-        run: python validate_roll.py | tee roll_null_results.txt
-
+        run: python code/validate_roll.py | tee roll_null_results.txt
       - uses: actions/upload-artifact@v4
         with:
           name: validation-outputs
           path: |
+            run_all_results.txt
             validation_results.json
             lag_policy_results.txt
             elw_validation.txt
