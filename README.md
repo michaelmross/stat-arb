@@ -547,7 +547,7 @@ The write-up is *Cost Viability and Cointegration Are Anti-Correlated
 in Liquid US ETF Pairs: A ground-truth-validated negative result for
 daily-frequency statistical arbitrage*, Michael M. Ross, 2026. Its
 LaTeX source is maintained outside this repository, which holds the
-apparatus, the archived results, and the figures.
+apparatus, the archived results, and the figures. DOI https://doi.org/10.5281/zenodo.22059837.
 
 ## License
 
