@@ -1,9 +1,9 @@
 # stat-arb — measured negative results in retail statistical arbitrage
 
-Data, code, and figures for **[Cost Viability and Cointegration Are Anti-Correlated
+Data, code, and figures for *[Cost Viability and Cointegration Are Anti-Correlated
 in Liquid US ETF Pairs: A ground-truth-validated negative result for
-daily-frequency statistical arbitrage](https://doi.org/10.5281/zenodo.22059837)**
-(M. M. Ross, 2026).
+daily-frequency statistical arbitrage](https://doi.org/10.5281/zenodo.22059837)*
+(Ross, M. M., 2026).
 
 [![verify](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml/badge.svg)](https://github.com/michaelmross/stat-arb/actions/workflows/CI.yml)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.1342908584-blue.svg)](https://doi.org/10.5281/zenodo.22060550)
