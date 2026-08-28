@@ -413,6 +413,33 @@ by a constant and leaves every reported statistic invariant.
 Reconstruct with `fetch_data.py` (ETF panel, Tiingo token required) and
 `fetch_futures.py` (futures legs, no key).
 
+### Data sources
+
+| source | what | how | in the note? |
+|---|---|---|---|
+| [Tiingo](https://www.tiingo.com) | ETF panel, 114 tickers, end-of-day adjusted closes, 2010-01-04 → 2026-08-21 | `fetch_data.py` (personal API token) | yes — sole source |
+| [Yahoo Finance](https://finance.yahoo.com), via [`yfinance`](https://github.com/ranaroussi/yfinance) | 9 continuous front-month futures legs (crack, crush, cattle) | `fetch_futures.py` (no key) | no — repo only |
+| Stooq | *none* | — | no |
+
+Tiingo supplied every price series behind the note, retrieved under a personal API token. Yahoo supplied only
+the futures legs for the production-margin study, which postdates it.
+`yfinance` is an unofficial community interface to Yahoo's endpoints,
+not a supported API — treat the futures panel as reproducible in
+practice but not guaranteed.
+
+`statarb/data.py` retains a Stooq loader and `fetch_data.py` a
+`--source stooq` verify branch, from an early attempt before that
+endpoint moved behind a JavaScript bot check. **No data in this
+repository came from Stooq.** The code path is kept because Stooq CSVs
+downloaded by hand still load correctly; note that Stooq closes are
+split- but not dividend-adjusted, which is unusable for same-index ETF
+spreads (differing ex-dividend dates stamp a sawtooth into the log
+spread that reads as mean reversion).
+
+Neither vendor's raw series is redistributed here: `data/` and
+`futures/` are gitignored, and `data_manifest.json` carries SHA-256
+fingerprints instead.
+
 ## Honest caveats before real capital
 
 1. Synthetic Sharpe ≈ 2 says the *pipeline* works, not that markets offer
