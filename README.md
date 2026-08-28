@@ -421,7 +421,8 @@ Reconstruct with `fetch_data.py` (ETF panel, Tiingo token required) and
 | [Yahoo Finance](https://finance.yahoo.com), via [`yfinance`](https://github.com/ranaroussi/yfinance) | 9 continuous front-month futures legs (crack, crush, cattle) | `fetch_futures.py` (no key) | no — repo only |
 | Stooq | *none* | — | no |
 
-Tiingo supplied every price series behind the note, retrieved under a personal API token. Yahoo supplied only
+Tiingo supplied every price series obtained for this repository, 
+retrieved under a personal API token. Yahoo supplied only
 the futures legs for the production-margin study, which postdates it.
 `yfinance` is an unofficial community interface to Yahoo's endpoints,
 not a supported API — treat the futures panel as reproducible in
