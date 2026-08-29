@@ -13,26 +13,14 @@ Figures:
   fig_crisis.pdf    BND/SPAB March 2020: frozen-parameter z + price anatomy
   fig_dcensus.pdf   fractional-d census with calibrated anchors
 
-The d-census anchor bands are hardcoded below rather than recomputed on
-every figure build. Their derivation is `fractional_census.anchors()`
-(`python fractional_census.py --anchors`), NOT `validate()`: the OU
-anchor uses a half-life and stationary width matched to the BH
-discoveries' own medians (2.06d, 13.6bp, seed 555, no micro noise),
-which is a different parameterisation from validate()'s SPY/IVV-scale
-OU+noise cell and gives 0.068, not that cell's 0.317. Anchors reproduce
-in distribution rather than to the digit, because the RNG stream
-position differs between a standalone call and the same cell run inside
-validate():
-
-  OU anchor  hardcoded 0.066 +/- 0.053 ; anchors() 0.068 +/- 0.054
-  RW anchor  hardcoded 0.543 +/- 0.042 ; anchors() 0.536 +/- 0.040
-
-Both gaps are under 0.25 se of the mean.
+The d-census anchor bands are the ground-truth calibrations from
+fractional_census.validate() (matched-half-life OU+noise 0.066 +/- 0.053,
+seed 555; SPY/IVV-calibrated RW+noise 0.543 +/- 0.042, seed 90210); they
+are hardcoded here with that provenance rather than recomputed on every
+figure build.
 """
 
 from __future__ import annotations
-
-import paths
 import argparse
 import json
 from pathlib import Path
@@ -44,9 +32,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-from coint import engle_granger
-from ou import fit_ou
-from backtest import zscore_backtest
+from statarb.coint import engle_granger
+from statarb.ou import fit_ou
+from statarb.backtest import zscore_backtest
 from statsmodels.tsa.stattools import acf
 
 plt.rcParams.update({"font.size": 9, "axes.titlesize": 9.5,
@@ -113,6 +101,17 @@ def fig_anatomy(data_dir: Path, out: Path):
         axes[0, col].set_title(f"{a}/{b} spread ({tag})")
         if col == 0:
             axes[0, col].set_ylabel("bp")
+        # Label every second year only. The automatic date locator puts a
+        # tick on all nine years of the discovery window, which collide in
+        # a panel this narrow; minor ticks keep the intervening years
+        # visible without labelling them.
+        axes[0, col].xaxis.set_major_locator(
+            mdates.YearLocator(2, month=1, day=1))
+        axes[0, col].xaxis.set_minor_locator(
+            mdates.YearLocator(1, month=1, day=1))
+        axes[0, col].xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+        axes[0, col].tick_params(axis="x", which="major", labelsize=8)
+        axes[0, col].set_xlim(s.index[0], s.index[-1])
         A = acf(eg.spread, nlags=40, fft=True)
         axes[1, col].bar(range(41), A, width=.8, color="tab:blue")
         axes[1, col].axhline(0, color="k", lw=.5)
@@ -229,10 +228,10 @@ def fig_dcensus(census: pd.DataFrame, out: Path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--scan", default=str(paths.data("scan_v2.json")))
-    ap.add_argument("--census", default=str(paths.data("fractional_census_results.json")))
-    ap.add_argument("--data", default=str(paths.PRICES))
-    ap.add_argument("--out", default=str(paths.FIGURES))
+    ap.add_argument("--scan", default="scan_v2.json")
+    ap.add_argument("--census", default="fractional_census_results.json")
+    ap.add_argument("--data", default="data")
+    ap.add_argument("--out", default=".")
     args = ap.parse_args()
 
     data_dir, out = Path(args.data), Path(args.out)
