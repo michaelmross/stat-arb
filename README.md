@@ -1,4 +1,4 @@
-# stat-arb — measured negative results in retail statistical arbitrage
+#Measured Negative Results in Retail Statistical Arbitrage
 
 Data, code, and figures for *[Cost Viability and Cointegration Are Anti-Correlated
 in Liquid US ETF Pairs: A ground-truth-validated negative result for
