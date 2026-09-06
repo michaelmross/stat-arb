@@ -1,4 +1,4 @@
-#Measured Negative Results in Retail Statistical Arbitrage
+# Measured Negative Results in Retail Statistical Arbitrage
 
 Data, code, and figures for *[Cost Viability and Cointegration Are Anti-Correlated
 in Liquid US ETF Pairs: A ground-truth-validated negative result for
