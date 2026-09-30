@@ -246,4 +246,8 @@ DESIGN.md and Section 5 of the paper.
 
 [Repository License](https://github.com/michaelmross/stat-arb/blob/main/LICENSE.md)
 
+## Not investment advice
 
+This is a research repository reporting negative results. Nothing here
+is a recommendation to trade, and the strategies it evaluates lost money
+or failed to trade at all under realistic costs.
