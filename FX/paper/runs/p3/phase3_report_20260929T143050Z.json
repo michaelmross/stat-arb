@@ -1,0 +1,40 @@
+{
+  "phase1_source": "phase1_20260929T142846Z.json",
+  "trades": {
+    "n": 0,
+    "n_evidential": 0,
+    "by_group": {}
+  },
+  "success_criterion": {
+    "checks": {
+      "n_trades_at_least_100": false,
+      "mean_net_positive": false,
+      "t_greater_than_2": false,
+      "positive_in_every_week": false,
+      "at_least_two_weeks": false
+    },
+    "met": false,
+    "n": 0,
+    "mean_net_pips": NaN,
+    "t": NaN,
+    "week_means": {}
+  },
+  "variance_decomposition": {
+    "total_sd_pips": 0.09757389714936437,
+    "grid_rounding_sd_pips": 0.02850114917462812,
+    "extrapolated_tau0_var": 0.008911097796624455,
+    "clamped": [],
+    "price_levels": {
+      "A": 1.1613425,
+      "B": 1.35278,
+      "C": 0.85866
+    },
+    "note": "sigma^2(tau) extrapolated linearly to tau=0; the slope is the asynchrony contribution, the intercept is everything else. The intercept still contains whatever asynchrony survives at tau=0 (quote ages are bounded by tau, never zero), so the unexplained term is an upper bound and is biased upward. Calibrate it against a synthetic derived-cross run, where the true unexplained component is zero by construction.",
+    "asynchrony_sd_pips": 0.024689423004401724,
+    "residual_after_rounding_sd_pips": 0.08999323470322673,
+    "grid_rounding_sd_pips_used": 0.02850114917462812,
+    "share_grid_rounding": 0.08532129527995738,
+    "share_asynchrony": 0.06402573584569116,
+    "share_unexplained": 0.8506529688743516
+  }
+}

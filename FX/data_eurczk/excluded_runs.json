@@ -1,0 +1,10 @@
+{
+  "_comment": "Runs quarantined from analysis. Append-only tick log is untouched.",
+  "runs": [
+    {
+      "run_id": "collect-oanda-20260909T142701Z",
+      "reason": "90-second plumbing smoke test on 2026-09-09 to verify the USD_CZK leg inversion against live quotes. Predates Phase 1b (starts 2026-09-14) and is not census data.",
+      "excluded_utc": "2026-09-09T14:35:00Z"
+    }
+  ]
+}
