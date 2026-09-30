@@ -8,7 +8,7 @@ measurement is negative.
 
 This is the code and archived analysis behind the paper
 [*Triangular FX Residuals on a Retail Feed Are Real, Measurable, and a Fourteenth
-of Their Cost*](paper/main.tex) (DOI **[TODO]**), a companion to
+of Their Cost*](paper/main.tex), a companion to
 [*Cost Viability and Cointegration Are Anti-Correlated in Liquid US ETF
 Pairs*](https://zenodo.org/records/22059837).
 
