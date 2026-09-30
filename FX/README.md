@@ -244,7 +244,6 @@ DESIGN.md and Section 5 of the paper.
 
 ## License and acknowledgments
 
-License: **[TODO: same as the parent repository?]**
+[Repository License](https://github.com/michaelmross/stat-arb/blob/main/LICENSE.md)
 
-Developed with Anthropic's Claude. The paper's acknowledgments describe how,
-and list the errors that were found and corrected along the way.
+
