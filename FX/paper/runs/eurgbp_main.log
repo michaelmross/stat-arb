@@ -1,8 +1,0 @@
-[replay] excluded 33 rows from 1 quarantined run(s): collect-oanda-20260831T072354Z (concurrent second collector during a --until smoke test; overlapped the live run 071353Z for ~2s and duplicated 33 ticks. The SingleWriterLock added the same day prevents recurrence.)
-[phase1] 1,181,278 ticks, source=oanda
-[phase1] 1,181,246 snapshots, 103,650 synchronized
-[phase1] clock anchors: T160050Z n=2, T070005Z n=1, T070723Z n=2, T070807Z n=1, T071353Z n=2, T072224Z n=1, T072354Z n=2, T070002Z n=1, T113349Z n=1, T113437Z n=2, T113509Z n=2, T070002Z n=2, T070002Z n=1, T070004Z n=1, T070002Z n=2, T070002Z n=2, T070003Z n=1, T144127Z n=2, T070002Z n=2, T070002Z n=2
-[phase1] residual sd = 0.0976 pip
-[phase1] deterministic events = 0 (0.000% of observations)
-[phase1] GATE G1: FAIL -- skip to Phase 3 and report; Phase 2 may run 2-3 days as pipeline validation only
-[phase1] wrote phase1_20260929T142846Z.json and phase1_20260929T142846Z.md

@@ -1,8 +1,0 @@
-[numbers] eurgbp: replaying
-[replay] excluded 33 rows from 1 quarantined run(s): collect-oanda-20260831T072354Z (concurrent second collector during a --until smoke test; overlapped the live run 071353Z for ~2s and duplicated 33 ticks. The SingleWriterLock added the same day prevents recurrence.)
-[numbers] audnzd: replaying
-[numbers] eurczk: replaying
-[numbers] reboot counterfactual
-[replay] excluded 33 rows from 1 quarantined run(s): collect-oanda-20260831T072354Z (concurrent second collector during a --until smoke test; overlapped the live run 071353Z for ~2s and duplicated 33 ticks. The SingleWriterLock added the same day prevents recurrence.)
-[numbers] NZD break
-[numbers] wrote paper/paper_numbers.json

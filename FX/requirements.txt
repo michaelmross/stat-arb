@@ -1,7 +1,0 @@
-# Python >= 3.11 (tomllib). Tested on CPython 3.14.3, Windows 10.
-httpx>=0.28        # OANDA v20 REST + streaming (tested 0.28.1)
-polars>=1.44       # tick logs and census (tested 1.44.0)
-pyarrow>=25        # parquet (tested 25.0.1)
-numpy>=2.4         # (tested 2.4.2)
-tzdata             # zoneinfo on Windows (tested 2025.3)
-matplotlib>=3.10   # paper figures only (tested 3.10.8)
