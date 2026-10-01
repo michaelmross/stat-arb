@@ -230,7 +230,7 @@ DESIGN.md and Section 5 of the paper.
   year   = {2026},
   note   = {Companion to "Cost Viability and Cointegration Are Anti-Correlated
             in Liquid US ETF Pairs"},
-  doi    = {[TODO]}
+  doi    = {(https://doi.org/10.5281/zenodo.23063280)}
 }
 ```
 
