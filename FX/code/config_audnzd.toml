@@ -1,0 +1,99 @@
+# PHASE 1B ARM 1 -- AUD/NZD.  Both legs carry genuine Asia-Pacific regional
+# flow, which is the best case for "a thin cross is priced independently".
+# Clean: no leg inversion, no pegged currency. Cheapest genuinely-thin clean
+# cross on the venue at 2.67 bp round trip = 1.9x EUR/GBP's 1.40 bp.
+#
+# PRE-REGISTERED PREDICTION (2026-09-09, before any collection).
+# Stated as k = round_trip / sigma, both in this cross's own pips so the pip
+# factor cancels. k is the entry threshold breakeven demands at full capture.
+# An earlier draft phrased this as "sigma above 0.095 pip"; that is ill-posed
+# across crosses, since a pip is worth 1.16 bp on EUR/GBP but 0.81 bp here.
+# Corrected before any data was collected -- not after seeing a result.
+#
+#   EUR/GBP measured over 8 sessions:  k = 13.7
+#   AUD/NZD costs 1.9x as much, so k ~= 26 if sigma matched; the measured
+#   liquidity-sigma relationship (r=+0.725, n=8) predicts sigma LOWER still.
+#
+# THE THIN-CROSS HYPOTHESIS SURVIVES ONLY IF AUD/NZD's k COMES IN BELOW 13.7.
+#
+# Triangular FX Stat-Arb — single source of truth for all runtime parameters.
+# Every run logs the sha256 of this file's *parsed* contents (config_hash) so the
+# report can prove parameters were frozen. See fxlib/config.py:config_hash.
+
+[meta]
+config_version = 1
+# Free-text label recorded in every run manifest.
+run_label = "phase1b-audnzd"
+
+[oanda]
+environment   = "practice"          # practice | live  -- 'live' is refused by the code
+api_host      = "api-fxpractice.oanda.com"
+stream_host   = "stream-fxpractice.oanda.com"
+# A = EUR_USD, B = GBP_USD, C = EUR_GBP.  Identity: C = A / B.
+instrument_a  = "AUD_USD"
+instrument_b  = "NZD_USD"
+instrument_c  = "AUD_NZD"
+# Legs quoted opposite to the X_Z / Y_Z form; inverted on ingest.
+inverted_legs = []
+# Pip size of the CROSS, from the venue metadata (all these are -4).
+pip_size      = 1e-4
+# Pin this arm to its own account (see the header note).
+account_id    = "101-001-40199672-002"
+
+[stream]
+heartbeat_timeout_s                = 15.0
+reconnect_backoff_s                = [1.0, 2.0, 5.0, 10.0, 30.0, 60.0]
+# Phase 2 TRADING arm kill switch (spec section 3). Halting on instability is
+# correct there: an unstable feed plus an open position is how you lose money.
+max_consecutive_reconnect_failures = 3
+# Phase 1 COLLECTOR. Deliberately far more patient, because the trade-off is the
+# opposite one: no position, no risk, and giving up donates the rest of the day
+# to whatever blip happened. With the backoff below capped at 60 s, this rides
+# out roughly three hours of continuous failure, and the session end time bounds
+# it anyway. Every reconnect is still written to data/events/.
+collector_max_reconnect_failures   = 200
+
+[storage]
+root        = "data_audnzd"
+part_rows   = 20000     # rows per parquet part file (append-only, crash-safe)
+part_flush_s = 60.0     # also flush a part after this many seconds
+
+[signal]
+tau_ms              = 250       # max quote age for a synchronized observation
+tau_sensitivity_ms  = [100, 250, 500, 1000]
+ewma_halflife_s     = 300.0     # EWMA half-life for rolling residual mean/sigma
+demean              = true      # z uses (resid - EWMA mean); false = spec-literal resid/sigma
+sigma_warmup_n      = 500       # observations before sigma is considered usable
+k_in                = 3.0       # |z| entry threshold  (set from Phase 1)
+k_out               = 0.0       # |z| exit threshold
+timeout_s           = 30.0      # T: max holding period
+majors_led_filter   = true      # only trade when A or B updated last
+majors_led_window_ms = 500
+
+[sessions]
+timezone            = "America/New_York"
+rollover_halt_start = "16:55"   # 5pm ET rollover spread blowout
+rollover_halt_end   = "18:05"
+week_close_weekday  = "Friday"
+week_close_time     = "16:55"
+week_open_weekday   = "Sunday"
+week_open_time      = "17:05"
+overlap_start       = "08:00"   # London/NY overlap -- analysis label, not a collection filter
+overlap_end         = "17:00"
+
+[execution]
+units               = 100000    # constant; size is irrelevant to the measurement
+max_trades_per_day  = 200       # kill switch
+max_open_positions  = 1         # kill switch: halt if position count not in {0,1}
+
+[analysis]
+reversion_horizons_s = [0.5, 1.0, 2.0, 5.0, 10.0, 30.0]
+resample_ms          = [100, 250, 500, 1000]   # 100 ms is below the feed cadence; kept because the spec asks for it
+event_study_z        = 2.0
+bootstrap_iters      = 1000
+derived_cross_pip_threshold = 0.05   # |eps| below this (in EUR/GBP pips) => cross looks derived
+
+[gate_g1]
+min_sigma_pips        = 0.10   # residual sigma must exceed this
+min_capture_fraction  = 0.25   # E[capture] within 30s as a fraction of one EUR/GBP spread
+capture_horizon_s     = 30.0
