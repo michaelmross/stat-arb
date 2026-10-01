@@ -14,7 +14,7 @@ Pairs*](https://doi.org/10.5281/zenodo.22059836).
 
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22060550-blue.svg)](https://doi.org/10.5281/zenodo.22060550)
 
-**Status:** complete. Collection ran 31 Aug – 25 Sep 2026; the paper-trading arm
+**Status:** Complete. Collection ran 31 Aug – 25 Sep 2026; the paper-trading arm
 (Phase 2) was never run, because the decision gate failed.
 
 ## Results at a glance
